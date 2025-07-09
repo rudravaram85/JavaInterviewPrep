@@ -1,7 +1,6 @@
                                                              Java Classes, Methods, Fields and Constructors Interview Questions and Answers
 
-                                                             Sure! Here are **25 interview questions and answers** on **Java classes, methods, fields, and constructors**, covering core OOP concepts and Java-specific details:
-
+                                                           
 ---
 
 ## ✅ 25 Java Interview Questions & Answers
