@@ -1,3 +1,105 @@
+                                                             Java Classes, Methods, Fields and Constructors Interview Questions and Answers
+
+                                                             Sure! Here are **25 interview questions and answers** on **Java classes, methods, fields, and constructors**, covering core OOP concepts and Java-specific details:
+
+---
+
+## ✅ 25 Java Interview Questions & Answers
+
+### On Classes, Methods, Fields, and Constructors
+
+---
+
+### 🔹 **Basic Level (1–10)**
+
+1. **What is a class in Java?**
+   ➤ A class is a blueprint or template from which objects are created. It defines fields (attributes) and methods (behavior).
+
+2. **What is an object in Java?**
+   ➤ An object is an instance of a class containing state (fields) and behavior (methods).
+
+3. **What are fields in Java?**
+   ➤ Fields are variables declared inside a class to hold the data/state of an object.
+
+4. **What is a method in Java?**
+   ➤ A method is a block of code that performs a specific task, defined inside a class.
+
+5. **What is a constructor?**
+   ➤ A constructor is a special method used to initialize new objects. It has the same name as the class and no return type.
+
+6. **Can a class have multiple constructors?**
+   ➤ Yes, this is called constructor overloading — multiple constructors with different parameter lists.
+
+7. **What is the default constructor?**
+   ➤ The no-argument constructor automatically provided by Java if no constructor is explicitly defined.
+
+8. **What is the difference between instance and static fields?**
+   ➤ Instance fields belong to objects; static fields belong to the class itself and are shared among all instances.
+
+9. **What is method overloading?**
+   ➤ Defining multiple methods with the same name but different parameter lists within the same class.
+
+10. **Can methods be overloaded based on return type only?**
+    ➤ No. Method overloading requires different parameter lists, not just different return types.
+
+---
+
+### 🔹 **Intermediate Level (11–20)**
+
+11. **What is method overriding?**
+    ➤ When a subclass provides its own implementation of a method defined in the superclass.
+
+12. **What is the difference between `this` and `super` keywords?**
+    ➤ `this` refers to the current object; `super` refers to the superclass of the current object.
+
+13. **Can constructors be inherited?**
+    ➤ No. Constructors are not inherited but can be called from subclass constructors using `super()`.
+
+14. **What is a static method?**
+    ➤ A method that belongs to the class rather than an instance and can be called without creating an object.
+
+15. **Can a static method access instance variables?**
+    ➤ No. Static methods can only access static variables directly.
+
+16. **What is encapsulation?**
+    ➤ Encapsulation is the technique of wrapping fields and methods inside a class and restricting direct access to some of the object's components.
+
+17. **What is the use of access modifiers?**
+    ➤ Access modifiers (`private`, `public`, `protected`, default) control the visibility of classes, fields, and methods.
+
+18. **Can a class have private constructors? Why?**
+    ➤ Yes. It’s used to restrict instantiation, often in Singleton design patterns.
+
+19. **What is the purpose of the `final` keyword when applied to a method?**
+    ➤ It prevents method overriding in subclasses.
+
+20. **What is an anonymous class?**
+    ➤ A class without a name defined and instantiated in a single expression, often used to override methods of classes or interfaces on the fly.
+
+---
+
+### 🔹 **Advanced Level (21–25)**
+
+21. **What is the difference between shallow copy and deep copy of an object?**
+    ➤ Shallow copy copies object references, so both objects share the same data. Deep copy duplicates all objects and data.
+
+22. **How does Java support constructor chaining?**
+    ➤ By using `this()` to call another constructor in the same class, or `super()` to call the superclass constructor.
+
+23. **What is the use of the `static` block in a class?**
+    ➤ It is used to initialize static fields and runs once when the class is loaded.
+
+24. **Can you override a static method?**
+    ➤ No. Static methods are hidden, not overridden.
+
+25. **What are instance initializer blocks?**
+    ➤ Blocks of code inside a class (outside methods) that run every time an instance is created, before the constructor.
+
+---
+
+If you want, I can also prepare this in PDF, quiz, or a coding exercise! Just say the word.
+
+                                                              
                                                               Inheritance Interview questions
 
 I can’t directly copy text to your clipboard, but you can easily do it yourself:
