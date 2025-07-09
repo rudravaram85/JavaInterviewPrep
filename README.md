@@ -1,3 +1,6 @@
+                                 
+                                 
+                                 
                                  Java Classes, Methods, Fields and Constructors Interview Questions and Answers
 
                                                            
@@ -389,3 +392,182 @@ Would you like this formatted as a **PDF** or **Quiz** or saved for later use?
 Once copied, you can paste it into a Word processor, notes app, or an online PDF generator like [pdfcrowd.com](https://www.pdfcrowd.com/) or [web2pdfconvert.com](https://web2pdfconvert.com/).
 
 Would you like a downloadable `.docx` file instead?
+
+
+                                      Java Exception Handling Interview Questions and Answers
+
+---
+
+## ✅ 25 Java Exception Handling Interview Questions & Answers
+
+### Focus: `try`, `catch`, `finally`
+
+---
+
+### 🔹 **Basic Level (1–10)**
+
+---
+
+1. **What is exception handling in Java?**
+   ➤ Exception handling is the process of handling runtime errors using constructs like `try`, `catch`, `throw`, `throws`, and `finally`.
+
+---
+
+2. **What is an exception?**
+   ➤ An exception is an object that represents an error or unexpected condition during program execution.
+
+---
+
+3. **What is the purpose of `try` block?**
+   ➤ The `try` block is used to wrap code that might throw exceptions.
+
+---
+
+4. **What is the purpose of `catch` block?**
+   ➤ A `catch` block handles specific exceptions thrown within the associated `try` block.
+
+---
+
+5. **What is the purpose of the `finally` block?**
+   ➤ The `finally` block contains code that **always executes** after the `try` block, regardless of whether an exception was thrown or caught.
+
+---
+
+6. **Can a `try` block exist without a `catch` block?**
+   ➤ Yes, but only if a `finally` block is present.
+
+```java
+try {
+   // risky code
+} finally {
+   // cleanup code
+}
+```
+
+---
+
+7. **Can a `catch` block exist without a `try` block?**
+   ➤ No. A `catch` must always be associated with a `try`.
+
+---
+
+8. **What happens if an exception is not caught?**
+   ➤ The program terminates abnormally and the JVM prints the stack trace.
+
+---
+
+9. **Can multiple `catch` blocks be used with a single `try` block?**
+   ➤ Yes. Each `catch` block handles a different exception type.
+
+---
+
+10. **In what order are `catch` blocks checked?**
+    ➤ From top to bottom. More specific exceptions should be caught before more general ones.
+
+---
+
+### 🔹 **Intermediate Level (11–20)**
+
+---
+
+11. **What happens if the `finally` block throws an exception?**
+    ➤ It overrides any exception thrown in the `try` or `catch` block.
+
+---
+
+12. **Is the `finally` block always executed?**
+    ➤ Yes, except when the JVM exits using `System.exit()` or the thread is killed.
+
+---
+
+13. **Can a `try` block be nested?**
+    ➤ Yes. Java supports nested `try-catch` blocks.
+
+---
+
+14. **What is exception propagation?**
+    ➤ It refers to the process of passing the exception from one method to another up the call stack until it is caught.
+
+---
+
+15. **Can we use multiple exceptions in a single `catch` block?**
+    ➤ Yes, from Java 7 onward using multi-catch:
+
+```java
+catch (IOException | SQLException e) {
+   e.printStackTrace();
+}
+```
+
+---
+
+16. **What is the difference between checked and unchecked exceptions?**
+    ➤ **Checked exceptions** must be handled or declared (e.g., `IOException`).
+    ➤ **Unchecked exceptions** are not required to be handled (e.g., `NullPointerException`).
+
+---
+
+17. **Can we rethrow an exception from a `catch` block?**
+    ➤ Yes, using the `throw` keyword.
+
+---
+
+18. **Can a `finally` block modify the return value from a `try` block?**
+    ➤ Yes, if the return statement is in both blocks, the one in `finally` will override it.
+
+---
+
+19. **Can `return` be used in `try`, `catch`, and `finally` blocks?**
+    ➤ Yes, but using `return` in `finally` can lead to unexpected behavior and should be avoided.
+
+---
+
+20. **Can we catch the base class `Exception` instead of specific ones?**
+    ➤ Yes, but it's best practice to catch specific exceptions when possible.
+
+---
+
+### 🔹 **Advanced Level (21–25)**
+
+---
+
+21. **What happens if both `catch` and `finally` blocks throw exceptions?**
+    ➤ The exception in the `finally` block will **suppress** the one in the `catch` block.
+
+---
+
+22. **How to ensure resource cleanup when an exception occurs?**
+    ➤ Use `finally` blocks or Java 7’s **try-with-resources** for `AutoCloseable` resources.
+
+---
+
+23. **Is it a good practice to catch `Exception` or `Throwable`?**
+    ➤ Generally no, unless you're writing top-level error handlers or logging frameworks.
+
+---
+
+24. **Can exceptions be caught and ignored?**
+    ➤ Yes, but it’s considered bad practice unless you document a valid reason.
+
+```java
+try {
+   riskyOperation();
+} catch (Exception e) {
+   // ignored
+}
+```
+
+---
+
+25. **What are common runtime exceptions that can be caught using `catch` blocks?**
+    ➤ Examples:
+
+* `NullPointerException`
+* `ArrayIndexOutOfBoundsException`
+* `ArithmeticException`
+* `IllegalArgumentException`
+
+---
+
+Would you like these questions as a **PDF**, **quiz**, or in **flashcard format** for studying?
+
