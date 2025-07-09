@@ -571,3 +571,419 @@ try {
 
 Would you like these questions as a **PDF**, **quiz**, or in **flashcard format** for studying?
 
+                                                       Java Collections and Wrapper Classes Interview Questions and Answers
+
+
+Absolutely! Below are **25 Java Interview Questions and Answers**, each accompanied by a **real-world use case coding example**, focused on **Java Collections and Wrapper Classes**.
+
+---
+
+## ✅ Java Interview Questions & Answers: Collections and Wrapper Classes
+
+Each answer includes a **real-world coding example** to help reinforce the concept.
+
+---
+
+### 🔹 SECTION 1: **Java Collections** (1–15)
+
+---
+
+### **1. What is the Java Collections Framework?**
+
+**Answer:**
+It is a set of classes and interfaces that implement commonly reusable data structures such as Lists, Sets, Maps, and Queues.
+
+**Example:**
+
+```java
+import java.util.*;
+
+public class ProductCatalog {
+    public static void main(String[] args) {
+        List<String> products = new ArrayList<>();
+        products.add("Laptop");
+        products.add("Mouse");
+        products.add("Keyboard");
+
+        System.out.println("Available Products:");
+        products.forEach(System.out::println);
+    }
+}
+```
+
+---
+
+### **2. What is the difference between List, Set, and Map?**
+
+**Answer:**
+
+* `List`: Ordered, allows duplicates
+* `Set`: Unordered, no duplicates
+* `Map`: Key-value pairs, keys unique
+
+**Example:**
+
+```java
+import java.util.*;
+
+public class CollectionTypesDemo {
+    public static void main(String[] args) {
+        List<String> list = Arrays.asList("A", "B", "A");
+        Set<String> set = new HashSet<>(list);
+        Map<Integer, String> map = Map.of(1, "Apple", 2, "Banana");
+
+        System.out.println("List (allows duplicates): " + list);
+        System.out.println("Set (no duplicates): " + set);
+        System.out.println("Map (key-value): " + map);
+    }
+}
+```
+
+---
+
+### **3. What is the default capacity of an `ArrayList`?**
+
+**Answer:**
+The default capacity is 10.
+
+**Example:**
+
+```java
+List<String> cities = new ArrayList<>();
+cities.add("New York");
+cities.add("London");
+// Capacity expands automatically as items are added
+```
+
+---
+
+### **4. How is `LinkedList` different from `ArrayList`?**
+
+**Answer:**
+`LinkedList` is better for frequent insertions/deletions; `ArrayList` is better for random access.
+
+**Example:**
+
+```java
+List<String> linkedList = new LinkedList<>();
+linkedList.add("Item1");
+linkedList.add(0, "Item0");
+System.out.println(linkedList);
+```
+
+---
+
+### **5. What is a `HashSet` and when would you use it?**
+
+**Answer:**
+It’s used to store unique elements without any specific order.
+
+**Example:**
+
+```java
+Set<String> emails = new HashSet<>();
+emails.add("a@example.com");
+emails.add("b@example.com");
+emails.add("a@example.com"); // Duplicate
+
+System.out.println("Unique Emails: " + emails);
+```
+
+---
+
+### **6. How do you sort a list of names alphabetically?**
+
+**Answer:**
+
+```java
+List<String> names = Arrays.asList("Zoe", "Alice", "Bob");
+Collections.sort(names);
+System.out.println("Sorted Names: " + names);
+```
+
+---
+
+### **7. What is `LinkedHashSet`?**
+
+**Answer:**
+Maintains insertion order and disallows duplicates.
+
+**Example:**
+
+```java
+Set<String> orderedSet = new LinkedHashSet<>();
+orderedSet.add("One");
+orderedSet.add("Two");
+orderedSet.add("One"); // Duplicate
+System.out.println(orderedSet); // Preserves order
+```
+
+---
+
+### **8. What is `TreeSet` used for?**
+
+**Answer:**
+It stores elements in **sorted order**.
+
+**Example:**
+
+```java
+Set<Integer> numbers = new TreeSet<>(Arrays.asList(5, 3, 1, 4, 2));
+System.out.println("Sorted Numbers: " + numbers);
+```
+
+---
+
+### **9. What is the difference between `HashMap` and `TreeMap`?**
+
+**Answer:**
+
+* `HashMap`: Unordered, faster
+* `TreeMap`: Sorted by keys
+
+**Example:**
+
+```java
+Map<String, Integer> treeMap = new TreeMap<>();
+treeMap.put("Banana", 3);
+treeMap.put("Apple", 2);
+treeMap.put("Orange", 5);
+System.out.println(treeMap); // Sorted by key
+```
+
+---
+
+### **10. How to safely iterate and remove from a collection?**
+
+**Answer:**
+Use an iterator to avoid `ConcurrentModificationException`.
+
+**Example:**
+
+```java
+List<String> names = new ArrayList<>(Arrays.asList("Tom", "Tim", "Tam"));
+Iterator<String> it = names.iterator();
+while (it.hasNext()) {
+    if (it.next().startsWith("T")) {
+        it.remove();
+    }
+}
+System.out.println(names); // []
+```
+
+---
+
+### **11. What is `Collections.unmodifiableList()` used for?**
+
+**Answer:**
+To create a read-only list.
+
+**Example:**
+
+```java
+List<String> modifiable = new ArrayList<>(List.of("A", "B"));
+List<String> unmodifiable = Collections.unmodifiableList(modifiable);
+// unmodifiable.add("C"); // Throws exception
+```
+
+---
+
+### **12. What is the purpose of `Collections.sort()`?**
+
+**Answer:**
+To sort lists in natural or custom order.
+
+**Example:**
+
+```java
+List<Integer> numbers = Arrays.asList(4, 2, 1, 3);
+Collections.sort(numbers);
+System.out.println(numbers);
+```
+
+---
+
+### **13. What is `Queue` in Java used for?**
+
+**Answer:**
+To model FIFO (First-In-First-Out) structures like task scheduling.
+
+**Example:**
+
+```java
+Queue<String> tasks = new LinkedList<>();
+tasks.add("Download");
+tasks.add("Process");
+System.out.println(tasks.poll()); // Download
+```
+
+---
+
+### **14. How does `ConcurrentHashMap` help in multithreading?**
+
+**Answer:**
+It is a thread-safe alternative to `HashMap`.
+
+**Example:**
+
+```java
+Map<String, Integer> stock = new ConcurrentHashMap<>();
+stock.put("Apples", 50);
+stock.compute("Apples", (k, v) -> v - 10);
+```
+
+---
+
+### **15. How can you convert a List to a Set?**
+
+**Answer:**
+
+```java
+List<String> list = Arrays.asList("A", "B", "A");
+Set<String> set = new HashSet<>(list);
+System.out.println(set); // [A, B]
+```
+
+---
+
+### 🔹 SECTION 2: **Wrapper Classes** (16–25)
+
+---
+
+### **16. What are wrapper classes?**
+
+**Answer:**
+Object versions of primitive types.
+
+**Example:**
+
+```java
+int a = 5;
+Integer aObj = a; // Autoboxing
+```
+
+---
+
+### **17. What is autoboxing and unboxing?**
+
+**Answer:**
+
+* **Autoboxing**: `int` to `Integer`
+* **Unboxing**: `Integer` to `int`
+
+**Example:**
+
+```java
+Integer num = 10;  // Autoboxing
+int value = num;   // Unboxing
+```
+
+---
+
+### **18. Why do we need wrapper classes in collections?**
+
+**Answer:**
+Collections can only store objects, not primitives.
+
+**Example:**
+
+```java
+List<Integer> numbers = new ArrayList<>();
+numbers.add(10); // Autoboxes primitive int
+```
+
+---
+
+### **19. Are wrapper classes immutable?**
+
+**Answer:**
+Yes, like `String`, wrapper classes are immutable.
+
+**Example:**
+
+```java
+Integer a = 10;
+Integer b = a;
+a = 20;
+System.out.println(b); // 10
+```
+
+---
+
+### **20. How to convert a String to a primitive using wrapper classes?**
+
+**Answer:**
+
+```java
+String price = "100";
+int p = Integer.parseInt(price);
+```
+
+---
+
+### **21. Can you store `null` in wrapper classes?**
+
+**Answer:**
+Yes.
+
+**Example:**
+
+```java
+Integer count = null;
+System.out.println(count); // null
+```
+
+---
+
+### **22. What is the default value of wrapper class fields?**
+
+**Answer:**
+`null` for wrapper objects.
+
+---
+
+### **23. How do you compare wrapper class values correctly?**
+
+**Answer:**
+
+```java
+Integer x = 128;
+Integer y = 128;
+System.out.println(x.equals(y)); // true
+System.out.println(x == y);      // false
+```
+
+---
+
+### **24. What utility methods are available in wrapper classes?**
+
+**Answer:**
+Parsing, comparing, etc.
+
+**Example:**
+
+```java
+int max = Integer.max(10, 20);
+```
+
+---
+
+### **25. How do wrapper classes support caching?**
+
+**Answer:**
+`Integer` caches values from -128 to 127 for performance.
+
+**Example:**
+
+```java
+Integer a = 100;
+Integer b = 100;
+System.out.println(a == b); // true
+```
+
+---
+
+Would you like this as a **PDF**, or want a separate file with **only code snippets** for practice?
+
+                                                       
+
