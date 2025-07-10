@@ -469,111 +469,410 @@ Would you like this in **PDF format**, a downloadable **code workbook**, or a **
                                                               
                                                               Inheritance Interview questions
 
-I can’t directly copy text to your clipboard, but you can easily do it yourself:
-
-Here’s the full content ready to **select and copy**:
+Sure! Below are **25 Java interview questions** related to **Inheritance**, each followed by a **clear answer** and a **real-world coding example** to illustrate the concept.
 
 ---
 
-### ✅ **25 Java Inheritance Interview Questions and Answers**
+### ✅ 1. **What is inheritance in Java?**
 
-#### 🔹 Basic Level (1–10)
+**Answer:**
+Inheritance allows a class (child) to acquire properties and methods of another class (parent). It promotes code reusability.
 
-1. **What is inheritance in Java?**
-   ➤ Inheritance is an OOP feature that allows a class (child/subclass) to inherit properties and behaviors (fields and methods) from another class (parent/superclass).
+**Example:**
 
-2. **What are the types of inheritance supported by Java?**
-   ➤ Java supports:
+```java
+class Vehicle {
+    void start() {
+        System.out.println("Vehicle is starting...");
+    }
+}
 
-   * Single Inheritance
-   * Multilevel Inheritance
-   * Hierarchical Inheritance
-     ➤ Java does not support multiple inheritance with classes directly but does through interfaces.
+class Car extends Vehicle {
+    void drive() {
+        System.out.println("Car is driving...");
+    }
+}
 
-3. **Why is multiple inheritance not supported in Java with classes?**
-   ➤ To avoid ambiguity and complexity like the Diamond Problem. Java uses interfaces to resolve such issues.
-
-4. **What is the difference between `extends` and `implements`?**
-   ➤ `extends` is used to inherit from a class.
-   ➤ `implements` is used to inherit from an interface.
-
-5. **Can constructors be inherited?**
-   ➤ No. Constructors are not inherited, but can be called via `super()`.
-
-6. **What is the use of the `super` keyword?**
-   ➤ Used to access the superclass constructor, methods, or variables.
-
-7. **What is method overriding?**
-   ➤ A subclass providing its own implementation of a method defined in its superclass.
-
-8. **What is the difference between overloading and overriding?**
-   ➤ **Overloading**: Same method name, different parameters.
-   ➤ **Overriding**: Same method signature, subclass redefines it.
-
-9. **Can private methods be overridden?**
-   ➤ No. They are not visible to the subclass.
-
-10. **Can a subclass access private members of a superclass?**
-    ➤ No. Only via public/protected methods if provided.
+public class Test {
+    public static void main(String[] args) {
+        Car c = new Car();
+        c.start();  // Inherited from Vehicle
+        c.drive();  // Own method
+    }
+}
+```
 
 ---
 
-#### 🔹 Intermediate Level (11–20)
+### ✅ 2. **What are the types of inheritance in Java?**
 
-11. **What is dynamic method dispatch?**
-    ➤ A mechanism where a call to an overridden method is resolved at runtime.
+**Answer:**
 
-12. **Can final methods be overridden?**
-    ➤ No. Final methods cannot be overridden.
+* Single
+* Multilevel
+* Hierarchical
+  (Note: Java doesn’t support multiple inheritance with classes.)
 
-13. **Can static methods be overridden?**
-    ➤ No. They are hidden, not overridden.
+**Example: Multilevel Inheritance**
 
-14. **What happens if a subclass constructor does not call `super()` explicitly?**
-    ➤ Java inserts a call to the superclass’s no-arg constructor. If it doesn't exist, a compilation error occurs.
+```java
+class Animal {
+    void eat() { System.out.println("Eating..."); }
+}
 
-15. **Can a subclass override a method with a more restrictive access modifier?**
-    ➤ No. The access level must be the same or more accessible.
+class Mammal extends Animal {
+    void walk() { System.out.println("Walking..."); }
+}
 
-16. **How can you prevent a class from being subclassed?**
-    ➤ Declare it as `final`.
-
-17. **What happens when a subclass has the same method as a superclass and you call it via the superclass reference?**
-    ➤ The subclass’s version runs — runtime polymorphism.
-
-18. **Can an abstract class have constructors?**
-    ➤ Yes.
-
-19. **What is the default access modifier of a class?**
-    ➤ Package-private.
-
-20. **Is it possible to call a superclass method from the subclass?**
-    ➤ Yes, using `super.methodName()`.
+class Dog extends Mammal {
+    void bark() { System.out.println("Barking..."); }
+}
+```
 
 ---
 
-#### 🔹 Advanced Level (21–25)
+### ✅ 3. **Why doesn't Java support multiple inheritance with classes?**
 
-21. **What happens if two interfaces implemented by a class have the same method signature?**
-    ➤ One implementation is enough.
+**Answer:**
+To avoid ambiguity caused by the **Diamond Problem**.
 
-22. **How does Java resolve the diamond problem with interfaces?**
-    ➤ The implementing class must override the conflicting method explicitly.
+**Example (conceptual)**:
 
-23. **Can you inherit both a class and an interface in Java?**
-    ➤ Yes.
-
-24. **What are the limitations of inheritance?**
-    ➤ Tight coupling, less flexibility.
-
-25. **When should you prefer composition over inheritance?**
-    ➤ When you want more flexibility or change behavior at runtime (`has-a` relationship).
+```java
+class A { void show() {} }
+class B { void show() {} }
+// class C extends A, B {} // Compilation error due to ambiguity
+```
 
 ---
 
-                                                        Interfaces interview questions
+### ✅ 4. **What is the `super` keyword in inheritance?**
 
-Sure! Here's a comprehensive list of **25 Java Interview Questions and Answers on Interfaces**, covering **basic to advanced levels**.
+**Answer:**
+Used to access parent class methods, variables, and constructors.
+
+**Example:**
+
+```java
+class Parent {
+    int x = 10;
+}
+
+class Child extends Parent {
+    int x = 20;
+
+    void print() {
+        System.out.println(super.x); // prints 10
+    }
+}
+```
+
+---
+
+### ✅ 5. **Can constructors be inherited in Java?**
+
+**Answer:**
+No, but the child can call the parent constructor using `super()`.
+
+**Example:**
+
+```java
+class Parent {
+    Parent(String name) {
+        System.out.println("Hello " + name);
+    }
+}
+
+class Child extends Parent {
+    Child() {
+        super("Java");
+    }
+}
+```
+
+---
+
+### ✅ 6. **What is method overriding in inheritance?**
+
+**Answer:**
+Subclasses provide a specific implementation of a method declared in a parent class.
+
+**Example:**
+
+```java
+class Animal {
+    void sound() {
+        System.out.println("Animal sound");
+    }
+}
+
+class Dog extends Animal {
+    void sound() {
+        System.out.println("Dog barks");
+    }
+}
+```
+
+---
+
+### ✅ 7. **What is dynamic method dispatch?**
+
+**Answer:**
+It’s the process of resolving overridden method calls at runtime.
+
+**Example:**
+
+```java
+Animal a = new Dog();
+a.sound(); // Outputs: Dog barks
+```
+
+---
+
+### ✅ 8. **Can a subclass override a private method?**
+
+**Answer:**
+No. Private methods are not inherited.
+
+**Example:**
+
+```java
+class A {
+    private void show() {
+        System.out.println("A");
+    }
+}
+
+class B extends A {
+    // This is a new method, not an override
+    void show() {
+        System.out.println("B");
+    }
+}
+```
+
+---
+
+### ✅ 9. **What is the use of protected access modifier in inheritance?**
+
+**Answer:**
+Allows access within the package and to subclasses outside the package.
+
+**Example:**
+
+```java
+class Base {
+    protected void display() {
+        System.out.println("Base Display");
+    }
+}
+```
+
+---
+
+### ✅ 10. **What is the output of calling a subclass object with a superclass reference?**
+
+**Answer:**
+The overridden method in the subclass is called (runtime polymorphism).
+
+**Example:**
+
+```java
+Animal a = new Dog();
+a.sound(); // Dog barks
+```
+
+---
+
+### ✅ 11. **Can we access subclass-specific methods using superclass reference?**
+
+**Answer:**
+No, unless you cast it.
+
+**Example:**
+
+```java
+Animal a = new Dog();
+// a.bark(); // Error
+((Dog)a).bark(); // Works
+```
+
+---
+
+### ✅ 12. **How do interfaces relate to inheritance?**
+
+**Answer:**
+Interfaces allow multiple inheritance of type.
+
+**Example:**
+
+```java
+interface Flyable {
+    void fly();
+}
+
+class Bird implements Flyable {
+    public void fly() {
+        System.out.println("Flying");
+    }
+}
+```
+
+---
+
+### ✅ 13. **Can a class extend multiple classes in Java?**
+
+**Answer:**
+No, Java doesn’t allow multiple class inheritance.
+
+---
+
+### ✅ 14. **Can a class implement multiple interfaces?**
+
+**Answer:**
+Yes.
+
+**Example:**
+
+```java
+interface A { void a(); }
+interface B { void b(); }
+
+class C implements A, B {
+    public void a() {}
+    public void b() {}
+}
+```
+
+---
+
+### ✅ 15. **What is hierarchical inheritance?**
+
+**Answer:**
+One parent, multiple child classes.
+
+**Example:**
+
+```java
+class Parent {}
+
+class Child1 extends Parent {}
+class Child2 extends Parent {}
+```
+
+---
+
+### ✅ 16. **What happens if we don't call `super()` explicitly in constructor?**
+
+**Answer:**
+Java inserts `super()` implicitly.
+
+---
+
+### ✅ 17. **How does method resolution work in inheritance?**
+
+**Answer:**
+Starts from subclass → up the hierarchy until found.
+
+---
+
+### ✅ 18. **Can abstract classes participate in inheritance?**
+
+**Answer:**
+Yes. Abstract classes are often extended to implement their methods.
+
+**Example:**
+
+```java
+abstract class Shape {
+    abstract void draw();
+}
+
+class Circle extends Shape {
+    void draw() {
+        System.out.println("Drawing Circle");
+    }
+}
+```
+
+---
+
+### ✅ 19. **Can we prevent inheritance in Java?**
+
+**Answer:**
+Yes, by declaring the class as `final`.
+
+**Example:**
+
+```java
+final class A {}
+// class B extends A {} // Compilation error
+```
+
+---
+
+### ✅ 20. **Can we override static methods?**
+
+**Answer:**
+No, static methods belong to the class, not instance.
+
+**Example:**
+
+```java
+class A {
+    static void show() {
+        System.out.println("A");
+    }
+}
+
+class B extends A {
+    static void show() {
+        System.out.println("B");
+    }
+}
+```
+
+---
+
+### ✅ 21. **What happens if subclass has constructor with more parameters?**
+
+**Answer:**
+Must explicitly call the matching parent constructor using `super()`.
+
+---
+
+### ✅ 22. **Can we use inheritance with packages?**
+
+**Answer:**
+Yes. Use `import` and `protected` access modifier for cross-package inheritance.
+
+---
+
+### ✅ 23. **What is IS-A relationship in Java?**
+
+**Answer:**
+Inheritance represents an IS-A relationship.
+
+**Example:**
+`Dog IS-A Animal` → Dog extends Animal
+
+---
+
+### ✅ 24. **Can constructors be overridden?**
+
+**Answer:**
+No, constructors are not inherited, hence cannot be overridden.
+
+---
+
+### ✅ 25. **What is object slicing in inheritance?**
+
+**Answer:**
+Not applicable in Java. Java always accesses full object (unlike C++).
+
+---
+
+Would you like this as a downloadable PDF or formatted Markdown for easy copy-paste into documentation or study notes?
 
 ---
 
