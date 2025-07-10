@@ -2104,6 +2104,273 @@ public class CompoundAssignDemo {
 
 ---
 
+Great! Let’s continue with the next set of **Java Operators**—covering increment/decrement, relational, and logical operators. As before, each section includes:
+
+* ✅ **5 bullet point explanations**
+* 📘 **5-line summary**
+* 💻 **Real-world code example placed at the end**
+
+---
+
+### 96. **Increment and Decrement Operators**
+
+* `++` increments a number by 1, `--` decrements it by 1.
+* **Prefix (`++i`)** modifies before usage; **Postfix (`i++`)** uses first, then modifies.
+* Often used in loops and counter-based logic.
+* Common in algorithms involving iteration, pagination, and indexing.
+* Easy to misuse when side effects are not well understood.
+
+**Summary:**
+Java’s increment (`++`) and decrement (`--`) operators simplify counting and traversal logic. Prefix and postfix forms behave differently in expressions, which is crucial in avoiding logic bugs. They're frequently used in `for` loops and performance-critical code.
+
+```java
+public class IncrementDemo {
+    public static void main(String[] args) {
+        int a = 5;
+        int pre = ++a; // a becomes 6, pre is 6
+        int post = a++; // post is 6, a becomes 7
+        System.out.println("Pre: " + pre + ", Post: " + post + ", a: " + a);
+    }
+}
+```
+
+---
+
+### 97. **Relational Operators**
+
+* Used to compare values: `==`, `!=`, `>`, `<`, `>=`, `<=`.
+* Always return a `boolean` (`true` or `false`).
+* Common in conditions, loops, and validations.
+* Essential for branching logic and algorithmic comparisons.
+* Comparisons follow type conversion rules (int to float etc.).
+
+**Summary:**
+Relational operators form the backbone of conditional logic in Java. From comparing numbers to validating inputs, these return boolean results and drive program decisions. Mastery of these is essential for controlling program flow and evaluating conditions.
+
+```java
+public class RelationalDemo {
+    public static void main(String[] args) {
+        int age = 20;
+        System.out.println("Eligible to vote? " + (age >= 18));
+    }
+}
+```
+
+---
+
+### 98. **Equality Operator (`==`)**
+
+* Compares **primitive values** for equality.
+* For **objects**, compares memory reference (not content).
+* Should not be used for `String` equality—use `.equals()` instead.
+* Useful for flags, counters, enums, and constants.
+* Very fast and efficient for primitive comparisons.
+
+**Summary:**
+The `==` operator checks primitive equality reliably, but caution is needed with objects like Strings, where reference equality may not match content. It’s ideal for comparing numeric values, characters, and enum constants.
+
+```java
+public class EqualityDemo {
+    public static void main(String[] args) {
+        int a = 5, b = 5;
+        String s1 = new String("hello");
+        String s2 = new String("hello");
+
+        System.out.println(a == b);        // true
+        System.out.println(s1 == s2);      // false (different objects)
+        System.out.println(s1.equals(s2)); // true (content match)
+    }
+}
+```
+
+---
+
+### 99. **Inequality Operator (`!=`)**
+
+* Checks if two values or references are **not equal**.
+* Opposite of `==`, returns `true` when values differ.
+* Also works with booleans, characters, and numerics.
+* Common in loops, filters, and mismatch detection.
+* Works with both primitives and reference types (object identity).
+
+**Summary:**
+The `!=` operator is useful for detecting difference—whether between numbers, flags, or objects. For object references, it checks identity. For meaningful string/content comparisons, combine it with `.equals()` or `!s1.equals(s2)`.
+
+```java
+public class NotEqualDemo {
+    public static void main(String[] args) {
+        int x = 3, y = 4;
+        System.out.println("Different? " + (x != y)); // true
+    }
+}
+```
+
+---
+
+### 100. **Greater Than / Less Than / etc. Operators**
+
+* `>`, `<`, `>=`, `<=` compare relative magnitude of numbers.
+* Only valid with numeric primitive types (or types that implement `Comparable`).
+* Commonly used in sorting, filtering, and logic conditions.
+* Not valid for `String` unless using `compareTo()` method.
+* Part of core conditional expressions in `if` or loops.
+
+**Summary:**
+Java’s comparison operators let you build expressions that evaluate order or bounds, such as "greater than 100" or "within range." These are vital in algorithms like binary search, min/max, and decision making.
+
+```java
+public class ComparisonDemo {
+    public static void main(String[] args) {
+        int price = 150;
+        System.out.println("Is price high? " + (price > 100)); // true
+    }
+}
+```
+
+---
+
+Here’s the next batch covering **Logical** and **Bitwise** operators in Java, with real-world context, bullet explanations, concise summaries, and code examples at the end:
+
+---
+
+### 101. Logical AND (`&&`)
+
+* Checks two boolean conditions and short-circuits: if the first is `false`, the second is not evaluated. ([CodeGuru][1], [GeeksforGeeks][2])
+* Useful for validating chained conditions, like input correctness and null-safety checks.
+* Avoids unnecessary or unsafe evaluations, improving performance and preventing errors.
+* Common in scenarios like authentication checks, form validation, and complex control flow.
+* Preferred over `&` for logical comparisons due to its short-circuiting nature.
+
+**Summary:**
+Logical AND (`&&`) is a short-circuiting operator that only evaluates the second operand if needed, making it efficient for multi-condition checks. Ideal for validations and safe guards, it ensures no unnecessary or risky evaluations occur. Its widespread use in conditions and control flow makes it a staple in Java logic.
+
+```java
+public class LogicalAndDemo {
+    public static void main(String[] args) {
+        String input = null;
+        if (input != null && input.length() > 5) {
+            System.out.println("Valid input: " + input);
+        } else {
+            System.out.println("Invalid or too short input.");
+        }
+    }
+}
+```
+
+---
+
+### 102. Logical OR (`||`)
+
+* Returns `true` if at least one of the conditions is `true`, short-circuiting if the first is `true`. ([upGrad][3], [FreeCodeCamp][4])
+* Used for combining default or fallback conditions, such as input defaults or feature flags.
+* Helps prevent errors by avoiding unnecessary evaluations, like in resource checks.
+* Acts as a guard in control flow for alternate valid paths.
+* Cleaner and more efficient compared to nested conditionals or using `|`.
+
+**Summary:**
+Logical OR (`||`) offers efficient checking of multiple conditions, stopping evaluation early when possible. It supports fallback logic in validation or feature toggles. Widely used in input handling and conditional flows, it’s a crucial tool for robust, readable code.
+
+```java
+public class LogicalOrDemo {
+    public static void main(String[] args) {
+        String role = "guest";
+        if (role.equals("admin") || role.equals("moderator")) {
+            System.out.println("Access granted.");
+        } else {
+            System.out.println("Access denied.");
+        }
+    }
+}
+```
+
+---
+
+### 103. Logical NOT (`!`)
+
+* Inverts a boolean expression: `true` becomes `false` and vice versa. ([upGrad][3])
+* Useful for checking inverse conditions, like failure or invalid states.
+* Improves code clarity by expressing negative logic directly.
+* Common in loop conditions, flag-based logic, and validation checks.
+* Helps simplify boolean logic alongside AND/OR combinations.
+
+**Summary:**
+Logical NOT (`!`) flips boolean values, enabling concise expression of negative conditions. It's frequently used in validations and logic flow controls. When combined with other logical operators, it helps maintain clarity and clean decision-making structures.
+
+```java
+public class LogicalNotDemo {
+    public static void main(String[] args) {
+        boolean loggedIn = false;
+        if (!loggedIn) {
+            System.out.println("Please log in first.");
+        }
+    }
+}
+```
+
+---
+
+### 104. Bitwise Operators (`&`, `|`, `^`, `~`, `<<`, `>>`, `>>>`)
+
+* Operate at the bit level for integer types, enabling low-level data manipulation.
+* `&`, `|`, `^` perform bitwise AND, OR, and XOR; shifts (<<, >>, >>>) change bit positions.
+* Common in permission checks, feature flags, and hardware interfacing. ([Reddit][5], [upGrad][3], [Javatpoint][6], [Intellipaat][7], [Wikipedia][8])
+* XOR is used in lightweight encryption or bit toggling scenarios.
+* Shifts efficiently multiply or divide by powers of two, used in performance-critical code.
+
+**Summary:**
+Bitwise operators let you work directly on individual bits for compact data representation, performance tuning, and hardware-closest operations. Their real-world uses include file permissions, feature flags, encryption, and graphics programming. Mastering these operators is key for systems-level or high-performance tasks.
+
+```java
+public class BitwiseDemo {
+    public static void main(String[] args) {
+        int flags = 0;
+        final int READ = 1;  // 001
+        final int WRITE = 2; // 010
+        final int EXECUTE = 4; // 100
+
+        flags |= READ | WRITE; // set read and write
+        boolean canRead = (flags & READ) == READ;
+        boolean canExecute = (flags & EXECUTE) == EXECUTE;
+
+        System.out.println("Can read: " + canRead);       // true
+        System.out.println("Can execute: " + canExecute); // false
+    }
+}
+```
+
+---
+
+### 105. Short-Circuit vs Bitwise Logical (`&&` vs `&` / `||` vs `|`)
+
+* `&&` and `||` are short-circuiting logical operators; `&` and `|` always evaluate both operands. ([Shiksha][9], [upGrad][3])
+* Use `&` and `|` when both conditions need guarantee evaluation (e.g., logging, side-effects).
+* Short-circuit helps performance and avoids unnecessary computation or exceptions.
+* Operator precedence: bitwise ops (`&`, `|`) have lower precedence than relational, but higher than `&&`, `||`.&#x20;
+* Best practice: generally prefer `&&`/`||`, use `&`/`|` for specific scenarios.
+
+**Summary:**
+Short-circuit operators (`&&`, `||`) provide safe, efficient evaluation, stopping when results are predictable. Non-short-circuit operators (`&`, `|`) evaluate all operands and are useful when both sides must run. Understanding their precedence and behavior is critical for predictable and performant logic.
+
+```java
+public class ShortCircuitDemo {
+    public static void main(String[] args) {
+        int a = 0;
+        if ((a == 1) && (++a == 2)) {
+            // second side not evaluated
+        }
+        System.out.println("After &&: a = " + a); // a remains 0
+
+        a = 0;
+        if ((a == 1) & (++a == 1)) {
+            // both evaluated
+        }
+        System.out.println("After &: a = " + a); // a becomes 1
+    }
+}
+```
+
+---
+
 
 
 
