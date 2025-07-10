@@ -1156,6 +1156,184 @@ Java’s Garbage Collector manages memory cleanup, simplifying development but r
 Classes define structure, objects are concrete realizations, instances are synonymous with objects, and references point to objects in memory.
 
 ---
+Absolutely! I’ll rearrange so that for each topic you get:
+
+* 5 bullet points
+* 5-line summary
+* Then the code snippet at the end
+
+Here’s the continuation with that format:
+
+---
+
+### 59. What is encapsulation in Java
+
+* Encapsulation hides internal object details and exposes only what’s necessary.
+* Private fields prevent unauthorized access from outside classes.
+* Public getters/setters control how data is read or modified.
+* Helps maintain code integrity and avoids accidental data corruption.
+* Makes the code more modular, maintainable, and secure.
+
+**Summary:**
+Encapsulation is a core OOP principle that protects object state by restricting direct access to fields. By exposing controlled access via methods, it ensures the integrity of data and enforces business rules. This makes code more modular and easier to maintain, and it reduces the risk of unexpected side effects or bugs caused by uncontrolled data changes. It’s heavily used in real-world applications like banking, where sensitive data must be protected.
+
+```java
+public class BankAccount {
+    private double balance;
+
+    public BankAccount(double initialBalance) {
+        if (initialBalance < 0) throw new IllegalArgumentException("Balance can't be negative");
+        this.balance = initialBalance;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void deposit(double amount) {
+        if(amount > 0) balance += amount;
+    }
+
+    public void withdraw(double amount) {
+        if(amount > 0 && balance >= amount) balance -= amount;
+        else System.out.println("Insufficient funds");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        BankAccount account = new BankAccount(1000);
+        account.deposit(500);
+        account.withdraw(2000);  // Should show insufficient funds
+        System.out.println("Balance: " + account.getBalance());
+    }
+}
+```
+
+---
+
+### 60. Single line Comments in Java
+
+* Use `//` to add brief notes or explanations in the code.
+* Useful for clarifying intent or logic to yourself and others.
+* Helps with debugging by temporarily disabling lines without deleting them.
+* Improves code readability and maintainability.
+* Ignored by the compiler, so no performance impact.
+
+**Summary:**
+Single line comments are the quickest way to add notes or disable code temporarily during debugging. They help improve code clarity for developers reading or maintaining the code later. In real-world projects, commenting critical logic or TODOs makes collaboration easier and reduces bugs.
+
+```java
+public class Calculator {
+    public static void main(String[] args) {
+        int a = 5;
+        int b = 10;
+        // int sum = a + b; // temporarily disabled
+        System.out.println("Program running without sum calculation.");
+    }
+}
+```
+
+---
+
+### 61. Multi-line Comments in Java
+
+* Use `/* ... */` to comment out multiple lines or write detailed explanations.
+* Great for describing complex logic or algorithms in code.
+* Useful for temporarily disabling blocks of code during development.
+* Can enhance collaboration by providing context or instructions.
+* Ignored by the compiler and have no runtime effect.
+
+**Summary:**
+Multi-line comments allow developers to add comprehensive notes or disable sections of code for testing. They improve documentation and understanding of complicated parts, which is important in professional environments or open-source projects.
+
+```java
+public class MathUtils {
+    public static int factorial(int n) {
+        /*
+         * Calculates factorial of a number n recursively.
+         * factorial(n) = n * factorial(n-1)
+         * factorial(0) = 1
+         */
+        if (n == 0) return 1;
+        return n * factorial(n - 1);
+    }
+}
+```
+
+---
+
+### 62. Introduction to javadoc comments
+
+* Javadoc comments begin with `/**` and end with `*/`.
+* Used to document classes, methods, parameters, and exceptions.
+* Supports tags like `@param`, `@return`, and `@throws`.
+* Enables automatic generation of HTML documentation via the `javadoc` tool.
+* Helps maintain clean, standardized documentation for APIs and libraries.
+
+**Summary:**
+Javadoc comments provide a structured way to document your Java code clearly, which helps other developers understand your APIs and facilitates automatic documentation generation. This is essential for professional-grade codebases and public libraries.
+
+```java
+/**
+ * Utility class to perform string operations.
+ */
+public class StringUtils {
+
+    /**
+     * Reverses a given string.
+     * @param input the string to reverse
+     * @return reversed string
+     */
+    public static String reverse(String input) {
+        return new StringBuilder(input).reverse().toString();
+    }
+}
+```
+
+---
+
+### 63. Generating javadoc using IntelliJ
+
+* IntelliJ IDEA can auto-generate javadoc comment templates with keyboard shortcuts.
+* Supports generating full HTML documentation files via the GUI.
+* Allows filtering by visibility modifiers (public, private, etc.) for docs.
+* Makes it easier to maintain consistent documentation.
+* Useful for large projects or APIs shared with teams or users.
+
+**Summary:**
+IntelliJ streamlines the creation and generation of javadoc documentation, improving developer productivity and ensuring your code is well documented and professional. This capability is particularly beneficial when building APIs or working in team environments.
+
+*(No direct code snippet — refer to previous javadoc example.)*
+
+---
+
+### 64. Introduction to String Pool in Java
+
+* String literals are stored in a shared pool to save memory.
+* Identical literals share the same object reference in the pool.
+* Using `new String()` creates distinct objects outside the pool.
+* `intern()` method adds strings to the pool explicitly.
+* Optimizes memory usage and enables fast equality checks with `==`.
+
+**Summary:**
+The String Pool is a memory optimization in Java where identical string literals share a single object instance. This reduces memory overhead and improves performance, especially in applications with many repeated strings like configuration keys or user roles.
+
+```java
+public class StringPoolDemo {
+    public static void main(String[] args) {
+        String s1 = "admin";
+        String s2 = "admin";
+        String s3 = new String("admin");
+        System.out.println(s1 == s2);  // true (same pool reference)
+        System.out.println(s1 == s3);  // false (new object)
+        System.out.println(s1 == s3.intern());  // true (interned)
+    }
+}
+```
+
+---
+
 
 
 
