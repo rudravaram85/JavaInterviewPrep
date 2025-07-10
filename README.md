@@ -8250,5 +8250,873 @@ public final class User {
 ---
 
 
+                                      Section 15: Unmasking Java's Superclass(java.lang.Object) Secrets
+
+Sure! Here’s a comprehensive breakdown of **Section 15: Unmasking Java’s Superclass (java.lang.Object) Secrets**, covering each topic with real-time coding examples, 5 bullet‑point explanations, a 5‑line summary with sample code, and 3 interview Q\&A per section. Let me know if you'd like code in specific versions or environments!
+
+---
+
+## 1. Introduction to the methods in `Object` class
+
+**Key methods in `Object`:**
+
+```java
+public int hashCode();
+public boolean equals(Object obj);
+public String toString();
+protected Object clone() throws CloneNotSupportedException;
+protected void finalize() throws Throwable;
+public final Class<?> getClass();
+```
+
+**5 bullet-point explanations:**
+
+* Provides foundational behavior for all Java objects.
+* `hashCode()` + `equals()` define object equality and hashing contracts.
+* `toString()` offers text representation, often overridden.
+* `clone()` enables object duplication; `finalize()` for cleanup before GC.
+* `getClass()` retrieves runtime type info.
+
+**5‑line summary + code:**
+
+* The `Object` class is the root superclass of all Java classes.
+* It provides core methods that enable polymorphic behavior across types.
+* Overriding `equals`, `hashCode`, and `toString` tailors object operations.
+* `clone` and `finalize` support lifecycle and cleanup management.
+* `getClass()` returns runtime type for reflection and type checks.
+
+```java
+Object o = new Object();
+System.out.println(o.getClass()); // class java.lang.Object
+System.out.println(o.toString()); // java.lang.Object@<hexhash>
+```
+
+**3 interview Q\&A:**
+
+1. *Why does every class inherit from `Object`?*
+   Ensures common behavior (e.g. equals, hashCode) across all objects, supports polymorphism.
+
+2. *What happens if you call `clone()` on an object that doesn’t support it?*
+   Throws `CloneNotSupportedException` unless the class implements `Cloneable`.
+
+3. *Is `finalize()` recommended for cleanup?*
+   No — unpredictable, deprecated in newer Java; prefer try-with-resources or `cleaner`.
+
+---
+
+## 2. Deep dive on `getClass()`
+
+**5 bullet-point explanations:**
+
+* Returns a `Class<?>` object representing the runtime class.
+* Final method, cannot be overridden.
+* Used for type checks (`obj.getClass() == SomeClass.class`).
+* Safer than `instanceof` when exact type is required.
+* Supports reflection: `getDeclaredMethods()`, `getFields()`, etc.
+
+**5‑line summary + code:**
+
+* `getClass()` is final and returns the exact runtime type.
+* Useful for runtime checks or logging type names.
+* Prevents downcasting errors by verifying class equality.
+* Enables reflective operations like instantiating or inspecting.
+* Always returns non-null.
+
+```java
+Object s = "hello";
+System.out.println(s.getClass().getName()); // java.lang.String
+```
+
+**3 interview Q\&A:**
+
+1. *Can `getClass()` be overridden?*
+   No — it's final in `Object`.
+2. *Difference between `getClass()` and `instanceof`?*
+   `getClass()` checks exact runtime class; `instanceof` checks subclass relationships.
+3. *Why `getClass()` never returns null?*
+   It's invoked on an existing instance, so `this` is non-null.
+
+---
+
+## 3. Deep dive on `hashCode()`
+
+**5 bullet-point explanations:**
+
+* Provides an integer hash code for objects.
+* Default implementation often derived from memory address.
+* Must be consistent with `equals()`: equal objects produce same hash.
+* Used in hash-based collections like `HashMap`, `HashSet`.
+* Collisions possible; but proper implementation improves distribution.
+
+**5‑line summary + code:**
+
+* `hashCode()` returns a number used in maps and sets.
+* Overriding ensures objects with same state have same hash.
+* Poor `hashCode()` impacts performance due to collisions.
+* Should use all relevant fields in computation.
+* Always return same hash for same object state unless mutated.
+
+```java
+class P{ int x, y;
+  public int hashCode(){ return 31 * x + y; }
+}
+```
+
+**3 interview Q\&A:**
+
+1. *What are hashCode contracts?*
+   Equal objects must have same hash; unequal can differ; stable during object's lifetime.
+2. *What if two objects have same hash?*
+   It's a collision: they go to same bucket and are compared via `equals()`.
+3. *What happens if you override `equals` but not `hashCode`?*
+   Violates contract and leads to inconsistent behavior in hash-based collections.
+
+---
+
+## 4. Deep dive on `equals()`
+
+**5 bullet-point explanations:**
+
+* Determines semantic equality between objects.
+* Default compares references (`this == obj`).
+* Must satisfy reflexive, symmetric, transitive, consistent, non-nullity.
+* Commonly overridden to compare relevant fields.
+* When overriding, consider using `instanceof` or `getClass()`.
+
+**5‑line summary + code:**
+
+* `equals()` expresses domain-specific equality.
+* Default identity check is often insufficient.
+* Proper override uses comprehensive field comparisons.
+* Must maintain `hashCode()` consistency.
+* Avoid null dereference by checking `if (obj == this)` early.
+
+```java
+@Override public boolean equals(Object o){
+  if(this == o) return true;
+  if(!(o instanceof P)) return false;
+  P p = (P) o;
+  return x == p.x && y == p.y;
+}
+```
+
+**3 interview Q\&A:**
+
+1. *Why check `this == o`?*
+   Quick check to handle reflexivity and improve performance.
+2. *Use `instanceof` or `getClass()`?*
+   `instanceof` allows subclass equality; `getClass()` enforces exact match.
+3. *Why check `o == null`?*
+   To ensure `equals(null)` returns false, fulfilling non-nullity clause.
+
+---
+
+## 5. Override `hashCode()` & `equals()` methods
+
+**5 bullet-point explanations:**
+
+* Ensures proper behavior in collections.
+* IDEs can auto‑generate robust implementations.
+* Should include all fields that define object identity.
+* Use prime multipliers (like 31) for `hashCode`.
+* Follow good coding conventions to avoid subtle bugs.
+
+**5‑line summary + code:**
+
+* Always override both `equals` and `hashCode` together.
+* Use all significant fields for comparisons and hash generation.
+* IDE tools help avoid mistakes and boilerplate.
+* Null checks and type comparisons are essential.
+* Ensures correctness in `HashMap`, `HashSet`, etc.
+
+```java
+@Override public int hashCode(){
+  return Objects.hash(x, y, name);
+}
+```
+
+**3 interview Q\&A:**
+
+1. *Why always override both?*
+   To maintain the general contract: equal → equal hash.
+2. *What tools help generate them?*
+   IDEs like IntelliJ, Eclipse, or `Objects.equals` and `Objects.hash`.
+3. *Can hashCode be negative?*
+   Yes, it can return any `int`, including negative.
+
+---
+
+## 6. Override `hashCode()` & `equals()` using IntelliJ
+
+**5 bullet-point explanations:**
+
+* IntelliJ auto-generates `equals()` and `hashCode()` via **Code → Generate**.
+* Offers templates using `Objects` utility class.
+* Lets you choose which fields contribute to identity.
+* Ensures proper ordering and null-check correctness.
+* Provides quick, tested, maintainable implementations.
+
+**5‑line summary + code:**
+
+* IntelliJ automates override generation: saves time and reduces errors.
+* Allows field selection for identity logic.
+* Generates robust, well-structured methods.
+* Includes null safety and proper type handling.
+* Keeps code consistent and maintainable.
+
+```java
+@Override public int hashCode(){
+  return Objects.hash(x, y, name);
+}
+@Override public boolean equals(Object o){ /* generated */ }
+```
+
+**3 interview Q\&A:**
+
+1. *Can IDE generation be trusted?*
+   Yes—IDEs generate correct, performance‑balanced code.
+2. *What if new fields are added later?*
+   Regenerate methods to include new fields.
+3. *Is manual tweaking needed?*
+   Only if custom logic (e.g. case‑insensitive comparison) is required.
+
+---
+
+## 7. Deep dive on `toString()`
+
+**5 bullet-point explanations:**
+
+* Default returns `Classname@hexHashCode`.
+* Overriding improves readability, especially in logs.
+* Include important field values.
+* Auto-generated by IDEs or libraries like Lombok.
+* Useful for debugging, logging, and diagnostics.
+
+**5‑line summary + code:**
+
+* `toString()` should reflect object content meaningfully.
+* Simplifies debugging and makes logs human‑readable.
+* Include only essential, non-sensitive fields.
+* Avoid heavy computation or formatting in `toString()`.
+* Override using IDEs or libraries for consistency.
+
+```java
+@Override public String toString(){
+  return "P{x=" + x + ", y=" + y + ", name='" + name + "'}";
+}
+```
+
+**3 interview Q\&A:**
+
+1. *Why override `toString()`?*
+   To produce clear, informative output for debugging.
+2. *What should `toString()` not do?*
+   Avoid heavy logic, I/O, or revealing sensitive info.
+3. *Use auto-generation tools?*
+   Yes, IDEs or Lombok’s `@ToString` are helpful.
+
+---
+
+## 8. Demo: `hashCode()`, `equals()` & `toString()` of `String`
+
+**5 bullet-point explanations:**
+
+* `String#hashCode()` is computed from character sequence:
+  `s[0]*31^(n-1) + s[1]*31^(n-2) + …`
+* `equals()` checks length and content equality.
+* `toString()` returns the same string object.
+* Immutable nature ensures safe, consistent behavior.
+* Enables `HashMap<String, V>` use and reliable logging.
+
+**5‑line summary + code:**
+
+* `String` overrides all three methods for predictable behavior.
+* Hash computed based on characters—content-based.
+* `equals()` checks exact character-by-character match.
+* `toString()` just returns the original string.
+* Immutable strings guarantee reliable hashing and equality.
+
+```java
+String a = "Hi";
+String b = new String("Hi");
+System.out.println(a.hashCode() == b.hashCode()); // true
+System.out.println(a.equals(b)); // true
+System.out.println(a.toString()); // Hi
+```
+
+**3 interview Q\&A:**
+
+1. *How is `String.hashCode()` implemented?*
+   As a polynomial rolling hash on character array.
+2. *Is `equals()` case-sensitive?*
+   Yes—compares actual characters.
+3. *Does `a == b` hold here?*
+   Only if interned; else, false because they’re different objects.
+
+---
+
+## 9. Deep dive on `finalize()`
+
+**5 bullet-point explanations:**
+
+* Called by GC before object is reclaimed.
+* Unreliable timing and not guaranteed to run promptly.
+* Deprecated since Java 9 and removed in Java 18.
+* Risky for resource cleanup (use `try-with-resources` instead).
+* Can resurrect the object, complicating GC.
+
+**5‑line summary + code:**
+
+* `finalize()` is unsafe and obsolete for cleanup.
+* Its execution timing is unpredictable; may never run.
+* Deprecated and removed—don't rely on it.
+* Use `AutoCloseable` and resource management instead.
+* Only relevant for legacy code migration.
+
+```java
+@Override protected void finalize() throws Throwable {
+  try { System.out.println("Cleanup"); }
+  finally { super.finalize(); }
+}
+```
+
+**3 interview Q\&A:**
+
+1. *When is `finalize()` called?*
+   At GC discretion; not reliably invoked.
+2. *Why deprecated?*
+   Due to unpredictability and safety concerns.
+3. *Preferred alternative?*
+   Use `AutoCloseable` with try‑with‑resources or `Cleaner`.
+
+---
+
+## 10. Deep dive on `clone()`
+
+**5 bullet-point explanations:**
+
+* Creates a field-by-field copy (shallow) by default.
+* Requires implementing `Cloneable`; throws exception otherwise.
+* Override and call `super.clone()` to enable cloning.
+* Use deep cloning manually if object contains mutable fields.
+* Often replaced by copy constructors or serialization.
+
+**5‑line summary + code:**
+
+* `clone()` automates shallow copying of objects.
+* Must implement `Cloneable`; otherwise throws exception.
+* Shallow clone duplicates object structure but not referenced objects.
+* Override to customize or deep-copy mutable references.
+* Many prefer copy constructors for clarity and safety.
+
+```java
+class C implements Cloneable {
+  int x; List<String> list;
+  protected Object clone() throws CloneNotSupportedException {
+    C c = (C) super.clone();
+    c.list = new ArrayList<>(list); // deep copy
+    return c;
+  }
+}
+```
+
+**3 interview Q\&A:**
+
+1. *Difference between shallow vs deep clone?*
+   Shallow copies references; deep clones duplicate referenced objects.
+2. *Why implement `Cloneable`?*
+   To signal safe cloning; otherwise, `clone()` throws exception.
+3. *Alternatives to `clone()`?*
+   Use copy constructors, `cloneable` libraries, or serialization copy.
+
+---
+
+## 11. Details about Shallow cloning & Deep cloning
+
+**5 bullet-point explanations:**
+
+* **Shallow clone:** copies object, but fields reference shared sub‑objects.
+* **Deep clone:** copies object and all nested objects recursively.
+* Mutability of fields influences chosen clone type.
+* Shallow clone is faster but riskier for shared state.
+* Deep clone safer but more complex and performance costly.
+
+**5‑line summary + code:**
+
+* Shallow clone copies primitive values; references remain shared.
+* Deep clone duplicates entire object graph to isolate state.
+* Choose shallow for immutable/reference-safe objects.
+* Use deep when copying involves mutable components.
+* Balanced cloning depends on use-case performance and safety.
+
+```java
+C a = new C(1, List.of("x"));
+C b = (C) a.clone();
+b.list.add("y"); // only affects b if deep‑cloned
+```
+
+**3 interview Q\&A:**
+
+1. *Risk with shallow clone?*
+   Shared references can lead to unintended side effects.
+2. *Deep clone downside?*
+   Higher memory use and complex implementation.
+3. *Best practice?*
+   Use immutability or copy constructors when possible.
+
+---
+
+## 12. Mutable and Immutable objects
+
+**5 bullet-point explanations:**
+
+* **Mutable:** internal state can change (e.g., `StringBuilder`).
+* **Immutable:** state never changes after creation (e.g., `String`).
+* Immutable are thread-safe and hash-stable.
+* Mutables require careful clone/equals/hashCode.
+* Choose immutability for safety; mutability for flexibility/performance.
+
+**5‑line summary + code:**
+
+* Immutable objects guarantee thread-safety and reliable caching.
+* They support safe use in hash-based structures.
+* Mutable objects allow in-place updates but need clone logic.
+* Java classes (`String`, `Integer`) are immutable by design.
+* Choose based on design: safety vs. efficiency and flexibility.
+
+```java
+String s = "abc"; // immutable
+StringBuilder sb = new StringBuilder("abc"); // mutable
+```
+
+**3 interview Q\&A:**
+
+1. *Why use immutable classes?*
+   Simplify concurrency, caching, and prevent unintended changes.
+2. *Can you mutate an immutable?*
+   No—only create new instances on modification.
+3. *When use mutable?*
+   For accumulators or complex state transformations for performance.
+
+---
+
+## 13. \[JAVA 16] Record classes
+
+**5 bullet-point explanations:**
+
+* Provides concise syntax for immutable data carriers.
+* Auto-generates `equals`, `hashCode`, and `toString`.
+* Fields declared in header are final and private.
+* Acts as a nominal tuple; ideal for DTOs.
+* Can implement interfaces and define methods too.
+
+**5‑line summary + code:**
+
+* Java 16 ordered compact syntax to define immutable value types.
+* Records automatically include correct `equals`, `hashCode`, `toString`.
+* Great for reducing boilerplate in simple data holders.
+* Promote immutability and thread-safety by default.
+* Enhances readability and maintainability in domain models.
+
+```java
+record Point(int x, int y) {}
+Point p1 = new Point(1,2);
+System.out.println(p1); // Point[x=1, y=2]
+```
+
+**3 interview Q\&A:**
+
+1. *How is record different from class?*
+   Records are final, immutable, and auto-generate common methods.
+2. *Can records have behavior?*
+   Yes—you can define custom methods and static factory.
+3. *Inheritance with records?*
+   Cannot extend another class; can implement interfaces.
+
+---
+
+## 14. \[JAVA 10] `var` (local variable type inference)
+
+**5 bullet-point explanations:**
+
+* Allows local variables without explicit type declaration.
+* Compiler infers type from initializer.
+* Improves readability, avoids redundancy.
+* Works only with initializing expressions, not null.
+* Maintains static type safety—type fixed at compile time.
+
+**5‑line summary + code:**
+
+* `var` enables type inference to reduce boilerplate.
+* Compiler ensures strong typing and type correctness.
+* Must assign a value at declaration.
+* Not allowed for fields or parameters.
+* Useful for long generic types and stream chains.
+
+```java
+var list = new ArrayList<String>();
+var map = Map.of("a", 1, "b", 2);
+```
+
+**3 interview Q\&A:**
+
+1. *Is `var` dynamically typed?*
+   No—still statically typed with compile-time inference.
+2. *Where can’t you use `var`?*
+   Not for class fields, method parameters, or uninitialized locals.
+3. *When is `var` not recommended?*
+   If it harms readability or type clarity.
+
+---
+
+                                           Section 16: Introduction to Collections & Wrapper Classes
+
+Here's a detailed breakdown for **Section 16: Introduction to Collections & Wrapper Classes** with explanations, real-time examples, summary, code, and interview questions per topic:
+
+---
+
+### 🔹 Arrays Have Limitations
+
+**Use Case**: Managing dynamic student attendance data in a classroom.
+
+#### 💡 Explanations:
+
+* Arrays are **fixed in size**, making it hard to manage data when size is unpredictable.
+* Arrays can hold **only homogeneous data types** (all elements must be the same type).
+* Lack of built-in methods like `add()`, `remove()`, or `contains()` makes them less flexible.
+* Type-safety isn’t guaranteed in object arrays without type checking.
+* Arrays do not support **dynamic resizing**, sorting, or searching efficiently.
+
+#### ✅ Summary:
+
+Arrays in Java are foundational, but they lack flexibility for modern data operations such as resizing, dynamic insertion/removal, or handling heterogeneous data types. This makes them less suitable for complex applications where data structure flexibility is crucial.
+
+#### 📌 Code Example:
+
+```java
+public class ArrayLimitationExample {
+    public static void main(String[] args) {
+        int[] studentIds = new int[3];
+        studentIds[0] = 101;
+        studentIds[1] = 102;
+        studentIds[2] = 103;
+        // studentIds[3] = 104; // Error: ArrayIndexOutOfBoundsException
+        System.out.println("Fixed size array can't add more than 3 students.");
+    }
+}
+```
+
+#### 🧠 Interview Q\&A:
+
+1. **Q:** What is the main limitation of arrays in Java?
+   **A:** Arrays are fixed in size and cannot dynamically grow or shrink.
+
+2. **Q:** Can arrays store mixed data types in Java?
+   **A:** No, arrays are type-safe and store only one data type.
+
+3. **Q:** Why are collections preferred over arrays?
+   **A:** Collections offer dynamic sizing and utility methods for manipulation.
+
+---
+
+### 🔹 What are Collections & Why They Accept Only Objects
+
+**Use Case**: Storing employee records in a dynamic list.
+
+#### 💡 Explanations:
+
+* Collections are **resizable data structures** for storing objects.
+* Java collections only accept **objects**, not primitives.
+* They support operations like **add, remove, search, sort**, etc.
+* Allow **generics** for type safety and compile-time checks.
+* Provides a **rich API** and supports **interfaces like List, Set, Map**.
+
+#### ✅ Summary:
+
+Collections offer a powerful alternative to arrays, capable of handling dynamic, object-oriented data structures. They store only objects to maintain uniformity and provide a wide variety of methods for efficient data management.
+
+#### 📌 Code Example:
+
+```java
+import java.util.*;
+
+public class CollectionExample {
+    public static void main(String[] args) {
+        List<String> employees = new ArrayList<>();
+        employees.add("Alice");
+        employees.add("Bob");
+        employees.add("Charlie");
+        System.out.println("Employee List: " + employees);
+    }
+}
+```
+
+#### 🧠 Interview Q\&A:
+
+1. **Q:** Why do Java collections only work with objects?
+   **A:** Because Java uses polymorphism and objects provide more flexibility and functionality.
+
+2. **Q:** Can primitive types be used in collections directly?
+   **A:** No, they need to be converted into wrapper classes.
+
+3. **Q:** Name three interfaces in the Java Collections Framework.
+   **A:** List, Set, Map.
+
+---
+
+### 🔹 Introduction to Wrapper Classes
+
+**Use Case**: Saving age data in a collection.
+
+#### 💡 Explanations:
+
+* Wrapper classes **wrap primitive types** into objects.
+* Examples: `int → Integer`, `double → Double`, `char → Character`.
+* Necessary for storing primitives in collections.
+* Enable use of utility methods like `parseInt()`, `valueOf()`, etc.
+* Provide constants like `MAX_VALUE`, `MIN_VALUE`.
+
+#### ✅ Summary:
+
+Wrapper classes bridge the gap between primitive types and objects, enabling the use of primitives in collections and providing utility functions. They're essential for Java’s object-oriented paradigm.
+
+#### 📌 Code Example:
+
+```java
+public class WrapperExample {
+    public static void main(String[] args) {
+        int num = 10;
+        Integer wrappedNum = Integer.valueOf(num); // Boxing
+        System.out.println("Wrapped Integer: " + wrappedNum);
+    }
+}
+```
+
+#### 🧠 Interview Q\&A:
+
+1. **Q:** What is a wrapper class?
+   **A:** A wrapper class converts a primitive type into an object.
+
+2. **Q:** Why are wrapper classes important?
+   **A:** They allow primitives to be used where objects are required.
+
+3. **Q:** Give examples of two wrapper classes.
+   **A:** Integer, Double.
+
+---
+
+### 🔹 Convert Primitive Type to Wrapper Objects (Boxing)
+
+**Use Case**: Reading numeric input and storing in a collection.
+
+#### 💡 Explanations:
+
+* Boxing converts primitives into their corresponding wrapper classes.
+* Done using `valueOf()` or `new` keyword (deprecated).
+* Needed when adding primitives to collections.
+* Helps to access utility methods of wrapper classes.
+* Ensures type compatibility in object-only contexts.
+
+#### ✅ Summary:
+
+Boxing is the manual or automatic conversion of primitives into their wrapper class equivalents, making them compatible with object-based operations and collections.
+
+#### 📌 Code Example:
+
+```java
+public class BoxingExample {
+    public static void main(String[] args) {
+        int age = 25;
+        Integer ageObject = Integer.valueOf(age); // Boxing
+        System.out.println("Boxed Integer: " + ageObject);
+    }
+}
+```
+
+#### 🧠 Interview Q\&A:
+
+1. **Q:** What is boxing in Java?
+   **A:** Converting a primitive type to its wrapper class.
+
+2. **Q:** Is `new Integer(5)` recommended?
+   **A:** No, prefer `Integer.valueOf(5)` due to performance benefits.
+
+3. **Q:** Which method is used for boxing?
+   **A:** `valueOf()`.
+
+---
+
+### 🔹 Convert Wrapper Objects into Primitive Types (Unboxing)
+
+**Use Case**: Performing arithmetic on user-entered number stored as an object.
+
+#### 💡 Explanations:
+
+* Unboxing converts wrapper class objects back to primitives.
+* Achieved using methods like `intValue()`, `doubleValue()`.
+* Useful for arithmetic and performance-critical operations.
+* Enables interoperability between object and primitive worlds.
+* Also supports auto-unboxing.
+
+#### ✅ Summary:
+
+Unboxing is the process of retrieving primitive values from their wrapper objects, allowing direct arithmetic and logical operations on wrapped data.
+
+#### 📌 Code Example:
+
+```java
+public class UnboxingExample {
+    public static void main(String[] args) {
+        Integer score = Integer.valueOf(90);
+        int rawScore = score.intValue(); // Unboxing
+        System.out.println("Unboxed Score: " + rawScore);
+    }
+}
+```
+
+#### 🧠 Interview Q\&A:
+
+1. **Q:** What is unboxing in Java?
+   **A:** Converting a wrapper object back into a primitive type.
+
+2. **Q:** Which method unboxes an `Integer`?
+   **A:** `intValue()`.
+
+3. **Q:** Is unboxing required in modern Java?
+   **A:** Mostly no, due to auto-unboxing.
+
+---
+
+### 🔹 Autoboxing and Unboxing
+
+**Use Case**: Performing arithmetic directly on list elements.
+
+#### 💡 Explanations:
+
+* Autoboxing is **automatic conversion** of primitives to wrapper objects.
+* Unboxing is **automatic extraction** of primitive from wrapper.
+* Reduces boilerplate and makes code cleaner.
+* Works in collection APIs seamlessly.
+* Introduced in Java 5.
+
+#### ✅ Summary:
+
+Autoboxing and unboxing simplify Java syntax by automatically converting between primitive types and wrapper classes, improving code readability and reducing manual conversion.
+
+#### 📌 Code Example:
+
+```java
+import java.util.*;
+
+public class AutoBoxingExample {
+    public static void main(String[] args) {
+        List<Integer> scores = new ArrayList<>();
+        scores.add(85); // autoboxing
+        int first = scores.get(0); // auto-unboxing
+        System.out.println("First Score: " + first);
+    }
+}
+```
+
+#### 🧠 Interview Q\&A:
+
+1. **Q:** What is autoboxing?
+   **A:** Automatic conversion of primitive types to wrapper classes.
+
+2. **Q:** Does Java handle unboxing automatically?
+   **A:** Yes, through auto-unboxing.
+
+3. **Q:** When was autoboxing introduced in Java?
+   **A:** Java 5.
+
+---
+
+### 🔹 Caching with `valueOf()` Methods
+
+**Use Case**: Comparing wrapper objects in performance-sensitive application.
+
+#### 💡 Explanations:
+
+* `valueOf()` caches objects for values between -128 to 127.
+* Improves memory and performance.
+* `new` always creates a new object.
+* Cached objects allow fast equality comparisons via `==`.
+* Useful in loops or frequently repeated numeric values.
+
+#### ✅ Summary:
+
+The `valueOf()` method in wrapper classes provides object caching for commonly used values, which optimizes memory and performance in repeated operations involving the same numeric values.
+
+#### 📌 Code Example:
+
+```java
+public class ValueOfCacheExample {
+    public static void main(String[] args) {
+        Integer a = Integer.valueOf(100);
+        Integer b = Integer.valueOf(100);
+        System.out.println(a == b); // true, same cache
+    }
+}
+```
+
+#### 🧠 Interview Q\&A:
+
+1. **Q:** What is the purpose of `valueOf()` method?
+   **A:** To return cached wrapper objects
+for better performance.
+
+2. **Q:** What range does Integer caching cover?
+   **A:** -128 to 127.
+
+3. **Q:** Does `new Integer(100) == new Integer(100)` return true?
+   **A:** No, it returns false because they are different objects.
+
+---
+
+### 🔹 Java Collection Framework Hierarchy
+
+**Use Case**: Choosing the right collection for storing unique user IDs.
+
+#### 💡 Explanations:
+
+* Collection framework is a hierarchy of interfaces and classes.
+* Root interfaces: `Collection` and `Map`.
+* Main sub-interfaces: `List`, `Set`, `Queue`.
+* Implementations: `ArrayList`, `HashSet`, `LinkedList`, etc.
+* Enables polymorphism and interchangeability of data structures.
+
+#### ✅ Summary:
+
+The Java Collection Framework organizes data structures into a well-defined hierarchy that enables developers to choose the most appropriate collection type for their use cases, based on features like ordering, uniqueness, or access pattern.
+
+#### 📌 Code Example:
+
+```java
+import java.util.*;
+
+public class CollectionHierarchyExample {
+    public static void main(String[] args) {
+        Set<Integer> userIds = new HashSet<>();
+        userIds.add(101);
+        userIds.add(102);
+        userIds.add(101); // duplicate ignored in Set
+        System.out.println("Unique User IDs: " + userIds);
+    }
+}
+```
+
+#### 🧠 Interview Q\&A:
+
+1. **Q:** What are the main interfaces in the Java Collection Framework?
+   **A:** Collection, List, Set, Queue, Map.
+
+2. **Q:** What interface does `ArrayList` implement?
+   **A:** List.
+
+3. **Q:** Which collection does not allow duplicates?
+   **A:** Set.
+
+---
+
 
 
