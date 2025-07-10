@@ -6714,6 +6714,51 @@ public class Main {
 ---
 
 
+                                                   Section 12: Arrays in Java
+
+each row can have a different length.
+
+3. **Q:** Use case of jagged arrays?
+   **A:** Representing data like grades per student, adjacency lists.
+
+---
+
+## 16. Three-Dimensional or 3D Arrays
+
+### Explanation with Use Case
+
+* A 3D array is an array of 2D arrays.
+* Used in volumetric data (like pixels in 3D space).
+* Accessed via three indices.
+* Useful in 3D simulations, cube-based storage.
+* Complexity increases with dimension.
+
+### Summary
+
+3D arrays extend data storage into an extra dimension, ideal for scientific models, 3D graphics, and cube-based systems. Though powerful, they require careful indexing and understanding of nested structure.
+
+### Code Example
+
+```java
+int[][][] cube = new int[2][2][2];
+cube[0][1][1] = 5;
+System.out.println(cube[0][1][1]); // 5
+```
+
+### Interview Q\&A
+
+1. **Q:** How to declare a 3D array?
+   **A:** `datatype[][][] array = new datatype[x][y][z];`
+
+2. **Q:** What is a practical use case of 3D arrays?
+   **A:** Simulating 3D space like voxel representation.
+
+3. **Q:** Are 3D arrays commonly used?
+   **A:** Not as common as 1D or 2D; used in specialized domains.
+
+---
+
+Would you like a downloadable PDF or structured document with all these topics for study or training purposes?
 
 
 
