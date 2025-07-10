@@ -2315,5 +2315,194 @@ u.setPassword("secure123");
 
 ---
 
-  
+                                                Section 5: Comments in Java
+
+Here's a complete breakdown for **Section 5: Comments in Java**, with each topic explained using real-time use cases, 5 bullet points, 5-line summaries, code examples, and interview questions and answers.
+
+---
+
+## 🔹 **Single-line Comments in Java**
+
+### ✅ Real-time Use Case:
+
+You're debugging a banking application and want to temporarily disable a line calculating interest.
+
+### 🔍 Explanation (5 Bullet Points):
+
+* Begins with `//` and continues until the end of the line.
+* Commonly used for quick notes or explanations.
+* Useful for commenting out a single line of code during debugging.
+* Often used to describe what a specific line or block is doing.
+* Increases code readability and assists in collaboration.
+
+### 📝 Summary:
+
+Single-line comments help in quickly documenting or disabling one line of Java code. They are especially useful for debugging or providing short, inline notes. Their simplicity and readability make them ideal for marking TODOs or FIXMEs. These comments are ignored by the compiler. Proper use improves collaboration and maintenance.
+
+### 💻 Code Example:
+
+```java
+public class Bank {
+    public static void main(String[] args) {
+        double balance = 1000;
+        // double interest = balance * 0.05; // Temporarily disabled
+        System.out.println("Balance: " + balance);
+    }
+}
+```
+
+### 💬 Interview Questions:
+
+**Q1: What symbol is used for single-line comments in Java?**
+**A:** Double slashes `//`.
+
+**Q2: Can single-line comments be placed after code on the same line?**
+**A:** Yes, e.g., `int x = 5; // initializing x`.
+
+**Q3: Do single-line comments affect code compilation?**
+**A:** No, they are ignored by the compiler.
+
+---
+
+## 🔹 **Multi-line Comments in Java**
+
+### ✅ Real-time Use Case:
+
+You want to disable a block of code while refactoring a large feature in an e-commerce app.
+
+### 🔍 Explanation (5 Bullet Points):
+
+* Starts with `/*` and ends with `*/`.
+* Can span multiple lines.
+* Ideal for large explanations or disabling blocks of code.
+* Enhances clarity during code documentation.
+* Commonly used during development or debugging phases.
+
+### 📝 Summary:
+
+Multi-line comments in Java are suitable for long explanations or disabling multiple lines of code. This is particularly helpful during major refactoring or when you're documenting complex logic. They improve maintainability and are completely ignored by the compiler. Proper formatting keeps code clean and understandable.
+
+### 💻 Code Example:
+
+```java
+public class ShoppingCart {
+    public static void main(String[] args) {
+        /*
+        double price = 50;
+        double tax = price * 0.10;
+        double total = price + tax;
+        System.out.println("Total: " + total);
+        */
+        System.out.println("Checkout Complete.");
+    }
+}
+```
+
+### 💬 Interview Questions:
+
+**Q1: What symbols define multi-line comments?**
+**A:** `/*` to begin and `*/` to end.
+
+**Q2: Can you nest multi-line comments in Java?**
+**A:** No, Java does not support nested multi-line comments.
+
+**Q3: Are multi-line comments compiled?**
+**A:** No, they are ignored during compilation.
+
+---
+
+## 🔹 **Introduction to Javadoc Comments**
+
+### ✅ Real-time Use Case:
+
+You're building a public Java library for date utilities and need to document its usage for other developers.
+
+### 🔍 Explanation (5 Bullet Points):
+
+* Begins with `/**` and ends with `*/`.
+* Specially used to generate HTML documentation.
+* Includes tags like `@param`, `@return`, and `@author`.
+* Located above class, method, or field declarations.
+* Helps IDEs like IntelliJ show rich tooltips.
+
+### 📝 Summary:
+
+Javadoc comments provide structured documentation for Java code using the `/** ... */` format. They're essential for API documentation and allow tools to generate readable HTML pages. These comments include structured tags that describe parameters, return types, and authors. Useful for both open-source and enterprise projects.
+
+### 💻 Code Example:
+
+```java
+/**
+ * Utility class for date operations.
+ * @author John
+ */
+public class DateUtils {
+
+    /**
+     * Adds days to the current date.
+     * @param days Number of days to add
+     * @return New date after addition
+     */
+    public LocalDate addDays(int days) {
+        return LocalDate.now().plusDays(days);
+    }
+}
+```
+
+### 💬 Interview Questions:
+
+**Q1: What’s the purpose of Javadoc comments?**
+**A:** To generate HTML documentation for Java code.
+
+**Q2: Which tag describes method parameters in Javadoc?**
+**A:** `@param`.
+
+**Q3: Can you use Javadoc for private methods?**
+**A:** Yes, but only public/protected Javadocs are typically exported.
+
+---
+
+## 🔹 **Generating Javadoc using IntelliJ**
+
+### ✅ Real-time Use Case:
+
+You're releasing a Java SDK and want to package HTML documentation along with it using IntelliJ.
+
+### 🔍 Explanation (5 Bullet Points):
+
+* IntelliJ supports Javadoc generation via menu options.
+* You need to document code with `/** ... */` style.
+* Supports HTML export for public APIs.
+* Ensures your libraries are self-documented.
+* Helps automate and standardize documentation output.
+
+### 📝 Summary:
+
+IntelliJ IDEA simplifies generating Javadoc through its interface. You document your classes and methods using Javadoc-style comments, then navigate to **Tools > Generate JavaDoc**. It outputs structured HTML files. This feature is invaluable for maintaining professional-grade Java libraries and SDKs.
+
+### 💻 Steps in IntelliJ:
+
+1. Add Javadoc comments to your code.
+2. Go to `Tools > Generate JavaDoc`.
+3. Choose output directory and options.
+4. Click OK, and view the generated HTML files.
+
+#### 🧪 Example Code:
+
+Use the same `DateUtils` class above. Once commented, use IntelliJ's **Tools > Generate JavaDoc**.
+
+### 💬 Interview Questions:
+
+**Q1: What is the purpose of generating Javadoc in IntelliJ?**
+**A:** To create browsable documentation from code comments.
+
+**Q2: Where do you find the Javadoc generation option in IntelliJ?**
+**A:** Under `Tools > Generate JavaDoc`.
+
+**Q3: What format is the generated output?**
+**A:** HTML files.
+
+---
+
+
 
