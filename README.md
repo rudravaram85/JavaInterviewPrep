@@ -2372,6 +2372,1978 @@ public class ShortCircuitDemo {
 ---
 
 
+Excellent! Next up: **Ternary/Conditional Operator** and **Operator Precedence & Associativity**. 🎯
+
+---
+
+### 106. Ternary or Conditional Operator (`? :`)
+
+* A shorthand for simple `if-else` that returns one of two values.
+* Format: `condition ? valueIfTrue : valueIfFalse`.
+* Ideal for inline assignments, concise code, and avoiding multi-line `if-else`.
+* Evaluates only relevant branch—efficient and clean.
+* Great for setting defaults, UI strings, and logging.
+
+**Summary:**
+The ternary operator simplifies conditional assignments by embedding logic within expressions. Perfect for initializing variables or formatting messages without verbose control structures. Its use supports cleaner, maintainable code when used for simple conditions.
+
+```java
+public class TernaryDemo {
+    public static void main(String[] args) {
+        int score = 85;
+        String grade = (score >= 90) ? "A" :
+                       (score >= 75) ? "B" : "C";
+        System.out.println("Grade: " + grade); // B
+    }
+}
+```
+
+---
+
+### 107. Operator Precedence & Associativity
+
+* Determines order of evaluation for compound expressions.
+* e.g., `*`/`/` higher priority than `+`/`-`; `==` vs. `&&` etc.
+* Associativity (left-to-right or right-to-left) defines order when operators share same precedence.
+* Parentheses can override default rules for clarity.
+* Misunderstanding precedence can introduce subtle bugs.
+
+**Summary:**
+Understanding operator precedence and associativity is crucial to avoid logic errors in complex expressions. When unclear, use parentheses to ensure correct order. This knowledge underpins predictable behavior in all Java expressions, from math to boolean logic.
+
+```java
+public class PrecedenceDemo {
+    public static void main(String[] args) {
+        int result = 3 + 4 * 2;      // 3 + (4*2) = 11
+        int x = 5, y = 10, z = 15;
+        boolean flag = x < y && y < z;  // true
+        System.out.println("result: " + result + ", flag: " + flag);
+    }
+}
+```
+
+---
+
+Great! Let’s move into **Control Flow Statements**, starting with **`if`, `else if`, `else` statements** in Java.
+
+---
+
+### 108. Deep Dive on `if`, `else if`, `else` Statements in Java
+
+* These are used to conditionally execute blocks of code based on boolean expressions.
+* `if` evaluates a condition; `else if` checks another condition if the first fails.
+* `else` runs when none of the previous conditions match.
+* Perfect for decision-making logic like user access control, pricing, or form validation.
+* Helps control the flow of execution based on different program states.
+
+**Summary:**
+`if-else` statements are core to Java’s control flow and decision-making. They allow programs to execute different paths depending on varying inputs or conditions. This structure is foundational for writing responsive, logic-based programs.
+
+```java
+public class IfElseDemo {
+    public static void main(String[] args) {
+        int age = 20;
+
+        if (age < 13) {
+            System.out.println("Child");
+        } else if (age < 20) {
+            System.out.println("Teenager");
+        } else {
+            System.out.println("Adult");
+        }
+    }
+}
+```
+
+---
+
+Great! Let's move on to the next topic in control flow:
+
+---
+
+### 109. **Nested `if-else if-else` Statements**
+
+* A nested `if` is an `if` statement inside another `if` or `else` block.
+* It's useful when multiple levels of conditions must be checked in a structured order.
+* Helps in handling complex decision logic like eligibility checks or multi-tier access systems.
+* Each condition block can independently contain further decision-making.
+* Readability is key—avoid too deep nesting to prevent confusion.
+
+**Summary:**
+Nested `if-else` statements enable developers to implement multi-level condition checking. This structure is helpful in real-world systems where decisions depend on multiple parameters. However, too much nesting should be avoided to maintain clean, readable code.
+
+```java
+public class NestedIfElseDemo {
+    public static void main(String[] args) {
+        int marks = 85;
+        String grade;
+
+        if (marks >= 90) {
+            grade = "A+";
+        } else if (marks >= 80) {
+            if (marks >= 85) {
+                grade = "A";
+            } else {
+                grade = "B+";
+            }
+        } else {
+            grade = "B";
+        }
+
+        System.out.println("Grade: " + grade);
+    }
+}
+```
+
+---
+
+Got it! Here are the next 10 topics with detailed answers, real-time use cases, explanations, summaries, and code examples at the end of each.
+
+---
+
+### 111. Deep Dive on Switch Case Statement
+
+* Switch simplifies multi-way branching based on a single variable.
+* Supports primitive types (int, char), enums, and strings.
+* Enhances readability over multiple `if-else-if` statements.
+* Used in menu-driven programs, state machines, and protocol handling.
+* Default case handles unexpected or fallback scenarios.
+
+**Summary:**
+Switch statements are a cleaner way to implement decision-making logic when there are multiple possible values of a single expression. It improves code clarity and efficiency, commonly applied in command parsing or selection menus.
+
+```java
+public class SwitchDemo {
+    public static void main(String[] args) {
+        int day = 3;
+        String dayName;
+        switch (day) {
+            case 1: dayName = "Monday"; break;
+            case 2: dayName = "Tuesday"; break;
+            case 3: dayName = "Wednesday"; break;
+            case 4: dayName = "Thursday"; break;
+            case 5: dayName = "Friday"; break;
+            default: dayName = "Weekend"; break;
+        }
+        System.out.println("Day is: " + dayName);
+    }
+}
+```
+
+---
+
+### 112. \[JAVA 14] Deep Dive on Switch Expression
+
+* Java 14 introduces switch as an expression returning values.
+* Uses `->` arrow syntax for concise cases.
+* Supports multiple labels per case using commas.
+* Eliminates need for explicit `break` statements.
+* Ideal for cleaner and more expressive code logic.
+
+**Summary:**
+Switch expressions in Java 14 make switch statements more concise and less error-prone by returning values directly. This helps avoid common pitfalls like forgetting breaks and allows more compact syntax.
+
+```java
+public class SwitchExpressionDemo {
+    public static void main(String[] args) {
+        int day = 4;
+        String dayName = switch (day) {
+            case 1, 2, 3 -> "Weekday";
+            case 4, 5 -> "Almost weekend";
+            case 6, 7 -> "Weekend";
+            default -> "Invalid day";
+        };
+        System.out.println(dayName);
+    }
+}
+```
+
+---
+
+### 113. Deep Dive on While Statement
+
+* Executes a block repeatedly as long as the condition is true.
+* Condition is checked before each iteration (pre-check loop).
+* Useful for reading data until a condition changes.
+* Employed in input validation, polling, or waiting for events.
+* Can cause infinite loops if condition is never false.
+
+**Summary:**
+The `while` loop allows repetitive execution based on a condition, ideal for scenarios where the number of iterations is unknown beforehand. It's widely used for continuous input reading or waiting for external events.
+
+```java
+import java.util.Scanner;
+
+public class WhileDemo {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int number;
+        do {
+            System.out.print("Enter positive number (0 to exit): ");
+            number = scanner.nextInt();
+            System.out.println("You entered: " + number);
+        } while (number != 0);
+        scanner.close();
+    }
+}
+```
+
+---
+
+### 114. Deep Dive on Do While Statement
+
+* Executes the loop body at least once (post-check loop).
+* Condition is checked after executing the block.
+* Useful when the loop must run at least one time.
+* Often used for menus or repeating prompts until valid input.
+* Less common but important for guaranteed first iteration logic.
+
+**Summary:**
+`do-while` loops guarantee the body runs at least once, making them suitable for user interaction scenarios where prompt appears before any condition check.
+
+```java
+import java.util.Scanner;
+
+public class DoWhileDemo {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int choice;
+        do {
+            System.out.println("1. Continue");
+            System.out.println("0. Exit");
+            System.out.print("Enter choice: ");
+            choice = scanner.nextInt();
+        } while (choice != 0);
+        scanner.close();
+        System.out.println("Exited.");
+    }
+}
+```
+
+---
+
+### 115. Deep Dive on For Loop
+
+* Common loop for iterating with initialization, condition, and update.
+* Best when number of iterations is known.
+* Used extensively in processing arrays, collections, or repetitive tasks.
+* Easy to control iteration variables.
+* Can nest for complex multi-level iterations.
+
+**Summary:**
+The `for` loop is ideal when you know in advance how many times you want to iterate, making it the workhorse for array processing, repeated calculations, and batch operations.
+
+```java
+public class ForLoopDemo {
+    public static void main(String[] args) {
+        for (int i = 1; i <= 5; i++) {
+            System.out.println("Count: " + i);
+        }
+    }
+}
+```
+
+---
+
+### 116. Deep Dive on Nested For Loops
+
+* For loops placed inside other for loops.
+* Useful for iterating multi-dimensional data like 2D arrays.
+* Enables matrix operations, pattern printing, and grid traversals.
+* Can be computationally expensive if not used carefully.
+* Common in algorithms involving pairs or triplets of elements.
+
+**Summary:**
+Nested loops allow traversal of multi-level data structures or solving problems requiring multiple dimensions, such as matrix processing or nested lists.
+
+```java
+public class NestedForLoopDemo {
+    public static void main(String[] args) {
+        for (int i = 1; i <= 3; i++) {
+            for (int j = 1; j <= 2; j++) {
+                System.out.println("i = " + i + ", j = " + j);
+            }
+        }
+    }
+}
+```
+
+---
+
+### 117. Break Statement
+
+* Used to exit loops or switch statements immediately.
+* Helps prevent unnecessary iterations.
+* Useful in search algorithms where match found early.
+* Can improve efficiency by stopping loops when condition met.
+* Should be used carefully to avoid confusing flow control.
+
+**Summary:**
+`break` statements allow early exit from loops or switches, optimizing performance and logic clarity, especially when continuing is pointless after a condition is met.
+
+```java
+public class BreakDemo {
+    public static void main(String[] args) {
+        for (int i = 1; i <= 10; i++) {
+            if (i == 5) {
+                System.out.println("Breaking at i = " + i);
+                break;
+            }
+            System.out.println(i);
+        }
+    }
+}
+```
+
+---
+
+### 118. Continue Statement
+
+* Skips the current iteration and proceeds with the next loop cycle.
+* Useful to skip invalid or unwanted values.
+* Helps keep loop logic clean by avoiding nested `if` blocks.
+* Common in filtering or skipping specific data during iteration.
+* Works only inside loops, not switch or if statements.
+
+**Summary:**
+The `continue` statement skips the remainder of the loop body for the current iteration, useful to filter or skip processing certain cases inside loops without breaking the whole loop.
+
+```java
+public class ContinueDemo {
+    public static void main(String[] args) {
+        for (int i = 1; i <= 5; i++) {
+            if (i == 3) {
+                System.out.println("Skipping " + i);
+                continue;
+            }
+            System.out.println(i);
+        }
+    }
+}
+```
+
+---
+
+### 119. Return Statement
+
+* Exits from a method and optionally returns a value.
+* Controls the flow in methods, allowing early exit.
+* Used to pass results back to the caller.
+* Can be used multiple times in a method for different outcomes.
+* Important for recursion base cases.
+
+**Summary:**
+The `return` statement controls method exit and data passing, crucial for breaking out early, returning computed results, or terminating recursive calls.
+
+```java
+public class ReturnDemo {
+    public static int square(int x) {
+        return x * x;
+    }
+    
+    public static void main(String[] args) {
+        int result = square(5);
+        System.out.println("Square of 5 is " + result);
+    }
+}
+```
+
+---
+
+### 120. Local Variables & Scope
+
+* Variables declared inside methods or blocks.
+* Visible only within the block they are declared.
+* Helps avoid unintended side effects by limiting variable access.
+* Each method invocation gets its own copy of local variables.
+* Prevents conflicts with variables of the same name elsewhere.
+
+**Summary:**
+Local variables hold temporary data inside methods or blocks and have limited visibility, helping maintain clean, modular, and bug-free code by restricting scope.
+
+```java
+public class LocalVariableDemo {
+    public static void main(String[] args) {
+        int number = 10;  // local variable
+        {
+            int numberInsideBlock = 20;  // scoped inside block
+            System.out.println("Inside block: " + numberInsideBlock);
+        }
+        System.out.println("Outside block: " + number);
+    }
+}
+```
+
+---
+
+Got it! Here are the next 10 topics with detailed answers, real-time use cases, explanations, summaries, and code examples at the end of each.
+
+---
+
+### 111. Deep Dive on Switch Case Statement
+
+* Switch simplifies multi-way branching based on a single variable.
+* Supports primitive types (int, char), enums, and strings.
+* Enhances readability over multiple `if-else-if` statements.
+* Used in menu-driven programs, state machines, and protocol handling.
+* Default case handles unexpected or fallback scenarios.
+
+**Summary:**
+Switch statements are a cleaner way to implement decision-making logic when there are multiple possible values of a single expression. It improves code clarity and efficiency, commonly applied in command parsing or selection menus.
+
+```java
+public class SwitchDemo {
+    public static void main(String[] args) {
+        int day = 3;
+        String dayName;
+        switch (day) {
+            case 1: dayName = "Monday"; break;
+            case 2: dayName = "Tuesday"; break;
+            case 3: dayName = "Wednesday"; break;
+            case 4: dayName = "Thursday"; break;
+            case 5: dayName = "Friday"; break;
+            default: dayName = "Weekend"; break;
+        }
+        System.out.println("Day is: " + dayName);
+    }
+}
+```
+
+---
+
+### 112. \[JAVA 14] Deep Dive on Switch Expression
+
+* Java 14 introduces switch as an expression returning values.
+* Uses `->` arrow syntax for concise cases.
+* Supports multiple labels per case using commas.
+* Eliminates need for explicit `break` statements.
+* Ideal for cleaner and more expressive code logic.
+
+**Summary:**
+Switch expressions in Java 14 make switch statements more concise and less error-prone by returning values directly. This helps avoid common pitfalls like forgetting breaks and allows more compact syntax.
+
+```java
+public class SwitchExpressionDemo {
+    public static void main(String[] args) {
+        int day = 4;
+        String dayName = switch (day) {
+            case 1, 2, 3 -> "Weekday";
+            case 4, 5 -> "Almost weekend";
+            case 6, 7 -> "Weekend";
+            default -> "Invalid day";
+        };
+        System.out.println(dayName);
+    }
+}
+```
+
+---
+
+### 113. Deep Dive on While Statement
+
+* Executes a block repeatedly as long as the condition is true.
+* Condition is checked before each iteration (pre-check loop).
+* Useful for reading data until a condition changes.
+* Employed in input validation, polling, or waiting for events.
+* Can cause infinite loops if condition is never false.
+
+**Summary:**
+The `while` loop allows repetitive execution based on a condition, ideal for scenarios where the number of iterations is unknown beforehand. It's widely used for continuous input reading or waiting for external events.
+
+```java
+import java.util.Scanner;
+
+public class WhileDemo {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int number;
+        do {
+            System.out.print("Enter positive number (0 to exit): ");
+            number = scanner.nextInt();
+            System.out.println("You entered: " + number);
+        } while (number != 0);
+        scanner.close();
+    }
+}
+```
+
+---
+
+### 114. Deep Dive on Do While Statement
+
+* Executes the loop body at least once (post-check loop).
+* Condition is checked after executing the block.
+* Useful when the loop must run at least one time.
+* Often used for menus or repeating prompts until valid input.
+* Less common but important for guaranteed first iteration logic.
+
+**Summary:**
+`do-while` loops guarantee the body runs at least once, making them suitable for user interaction scenarios where prompt appears before any condition check.
+
+```java
+import java.util.Scanner;
+
+public class DoWhileDemo {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int choice;
+        do {
+            System.out.println("1. Continue");
+            System.out.println("0. Exit");
+            System.out.print("Enter choice: ");
+            choice = scanner.nextInt();
+        } while (choice != 0);
+        scanner.close();
+        System.out.println("Exited.");
+    }
+}
+```
+
+---
+
+### 115. Deep Dive on For Loop
+
+* Common loop for iterating with initialization, condition, and update.
+* Best when number of iterations is known.
+* Used extensively in processing arrays, collections, or repetitive tasks.
+* Easy to control iteration variables.
+* Can nest for complex multi-level iterations.
+
+**Summary:**
+The `for` loop is ideal when you know in advance how many times you want to iterate, making it the workhorse for array processing, repeated calculations, and batch operations.
+
+```java
+public class ForLoopDemo {
+    public static void main(String[] args) {
+        for (int i = 1; i <= 5; i++) {
+            System.out.println("Count: " + i);
+        }
+    }
+}
+```
+
+---
+
+### 116. Deep Dive on Nested For Loops
+
+* For loops placed inside other for loops.
+* Useful for iterating multi-dimensional data like 2D arrays.
+* Enables matrix operations, pattern printing, and grid traversals.
+* Can be computationally expensive if not used carefully.
+* Common in algorithms involving pairs or triplets of elements.
+
+**Summary:**
+Nested loops allow traversal of multi-level data structures or solving problems requiring multiple dimensions, such as matrix processing or nested lists.
+
+```java
+public class NestedForLoopDemo {
+    public static void main(String[] args) {
+        for (int i = 1; i <= 3; i++) {
+            for (int j = 1; j <= 2; j++) {
+                System.out.println("i = " + i + ", j = " + j);
+            }
+        }
+    }
+}
+```
+
+---
+
+### 117. Break Statement
+
+* Used to exit loops or switch statements immediately.
+* Helps prevent unnecessary iterations.
+* Useful in search algorithms where match found early.
+* Can improve efficiency by stopping loops when condition met.
+* Should be used carefully to avoid confusing flow control.
+
+**Summary:**
+`break` statements allow early exit from loops or switches, optimizing performance and logic clarity, especially when continuing is pointless after a condition is met.
+
+```java
+public class BreakDemo {
+    public static void main(String[] args) {
+        for (int i = 1; i <= 10; i++) {
+            if (i == 5) {
+                System.out.println("Breaking at i = " + i);
+                break;
+            }
+            System.out.println(i);
+        }
+    }
+}
+```
+
+---
+
+### 118. Continue Statement
+
+* Skips the current iteration and proceeds with the next loop cycle.
+* Useful to skip invalid or unwanted values.
+* Helps keep loop logic clean by avoiding nested `if` blocks.
+* Common in filtering or skipping specific data during iteration.
+* Works only inside loops, not switch or if statements.
+
+**Summary:**
+The `continue` statement skips the remainder of the loop body for the current iteration, useful to filter or skip processing certain cases inside loops without breaking the whole loop.
+
+```java
+public class ContinueDemo {
+    public static void main(String[] args) {
+        for (int i = 1; i <= 5; i++) {
+            if (i == 3) {
+                System.out.println("Skipping " + i);
+                continue;
+            }
+            System.out.println(i);
+        }
+    }
+}
+```
+
+---
+
+### 119. Return Statement
+
+* Exits from a method and optionally returns a value.
+* Controls the flow in methods, allowing early exit.
+* Used to pass results back to the caller.
+* Can be used multiple times in a method for different outcomes.
+* Important for recursion base cases.
+
+**Summary:**
+The `return` statement controls method exit and data passing, crucial for breaking out early, returning computed results, or terminating recursive calls.
+
+```java
+public class ReturnDemo {
+    public static int square(int x) {
+        return x * x;
+    }
+    
+    public static void main(String[] args) {
+        int result = square(5);
+        System.out.println("Square of 5 is " + result);
+    }
+}
+```
+
+---
+
+### 120. Local Variables & Scope
+
+* Variables declared inside methods or blocks.
+* Visible only within the block they are declared.
+* Helps avoid unintended side effects by limiting variable access.
+* Each method invocation gets its own copy of local variables.
+* Prevents conflicts with variables of the same name elsewhere.
+
+**Summary:**
+Local variables hold temporary data inside methods or blocks and have limited visibility, helping maintain clean, modular, and bug-free code by restricting scope.
+
+```java
+public class LocalVariableDemo {
+    public static void main(String[] args) {
+        int number = 10;  // local variable
+        {
+            int numberInsideBlock = 20;  // scoped inside block
+            System.out.println("Inside block: " + numberInsideBlock);
+        }
+        System.out.println("Outside block: " + number);
+    }
+}
+```
+
+---
+
+Sure! Here are the next 20 topics explained with real-time use cases, bullet points, summaries, and code at the end of each:
+
+---
+
+### 131. Deep Dive on POJO Classes
+
+* POJO: Plain Old Java Object, simple class without special restrictions.
+* Used to model data with private fields and public getters/setters.
+* No inheritance or annotations required.
+* Commonly used for data transfer objects (DTOs).
+* Enhances readability and maintainability.
+
+**Summary:**
+POJO classes are simple Java classes designed to hold data, typically with private fields and public getters/setters, making them perfect for clean data modeling.
+
+```java
+public class Person {
+    private String name;
+    private int age;
+
+    public Person() {}
+
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public int getAge() { return age; }
+    public void setAge(int age) { this.age = age; }
+}
+```
+
+---
+
+### 132. Introduction to Inheritance in Java
+
+* Enables a new class (subclass) to inherit properties/methods from a parent class.
+* Supports code reuse and method overriding.
+* Represents “is-a” relationship.
+* Helps create hierarchical class structures.
+* Promotes polymorphism.
+
+**Summary:**
+Inheritance allows one class to reuse and extend another’s functionality, enabling hierarchical designs and code reuse, fundamental to OOP.
+
+```java
+class Animal {
+    void eat() { System.out.println("Eating"); }
+}
+
+class Dog extends Animal {
+    void bark() { System.out.println("Barking"); }
+}
+```
+
+---
+
+### 133. Object Class is the Default Superclass
+
+* Every Java class implicitly inherits from `java.lang.Object`.
+* Provides fundamental methods like `toString()`, `equals()`, `hashCode()`.
+* Allows polymorphism and method overriding.
+* Classes inherit default behavior from Object.
+* Forms root of all class hierarchies.
+
+**Summary:**
+All Java classes derive from the `Object` class, inheriting core methods and enabling polymorphism by default.
+
+```java
+class Custom {
+    @Override
+    public String toString() {
+        return "Custom toString() method";
+    }
+}
+```
+
+---
+
+### 134. is-a & has-a Relationships in Java
+
+* **is-a**: inheritance (Dog is-a Animal).
+* **has-a**: composition/aggregation (Car has-a Engine).
+* Facilitates design clarity.
+* Supports reusability and modularity.
+* Helps define object relationships.
+
+**Summary:**
+Understanding “is-a” (inheritance) and “has-a” (composition) relationships guides object-oriented design and helps build flexible, maintainable code.
+
+```java
+class Engine { }
+
+class Car {
+    private Engine engine;  // has-a relationship
+}
+```
+
+---
+
+### 135. What a Subclass Inherits from its Superclass
+
+* Inherits accessible fields and methods (public/protected/package-private).
+* Does NOT inherit constructors.
+* Can override inherited methods.
+* Cannot access private members directly.
+* Inherits static members but cannot override them.
+
+**Summary:**
+A subclass inherits non-private members and can override methods, enabling extension and customization of base class behavior.
+
+```java
+class Parent {
+    public void show() { System.out.println("Parent show"); }
+}
+
+class Child extends Parent {
+    @Override
+    public void show() { System.out.println("Child show"); }
+}
+```
+
+---
+
+### 136. Introduction to Upcasting in Java
+
+* Casting subclass object to superclass type.
+* Enables polymorphism.
+* Safe and implicit.
+* Limits access to superclass methods only.
+* Used in method parameters and collections.
+
+**Summary:**
+Upcasting treats subclass objects as superclass types, allowing polymorphism and uniform handling of related objects.
+
+```java
+Dog dog = new Dog();
+Animal animal = dog;  // upcasting
+animal.eat();
+```
+
+---
+
+### 137. Introduction to Downcasting & its Demo
+
+* Casting superclass reference back to subclass type.
+* Needs explicit cast and is unsafe if incorrect.
+* Enables access to subclass-specific methods.
+* Throws `ClassCastException` if invalid.
+* Used when specific subclass behavior is needed.
+
+**Summary:**
+Downcasting converts superclass references back to subclasses to access subclass methods but must be done carefully with type checks.
+
+```java
+Animal animal = new Dog();
+Dog dog = (Dog) animal;  // downcasting
+dog.bark();
+```
+
+---
+
+### 138. instanceof Operator
+
+* Tests if an object is an instance of a specific class or interface.
+* Helps avoid invalid downcasting.
+* Returns boolean.
+* Useful in polymorphic code.
+* Supports safe type checks.
+
+**Summary:**
+The `instanceof` operator ensures safe casting by checking the actual object type before downcasting.
+
+```java
+if (animal instanceof Dog) {
+    Dog dog = (Dog) animal;
+    dog.bark();
+}
+```
+
+---
+
+### 139. Static Binding and Dynamic Binding in Java
+
+* Static binding: compile-time method binding (for static, private, final methods).
+* Dynamic binding: runtime method dispatch (for overridden methods).
+* Enables polymorphism.
+* Improves flexibility and extensibility.
+* Key to Java's runtime behavior.
+
+**Summary:**
+Static binding resolves methods at compile time; dynamic binding resolves overridden methods at runtime, supporting polymorphism.
+
+```java
+class Parent {
+    void show() { System.out.println("Parent show"); }
+}
+
+class Child extends Parent {
+    @Override
+    void show() { System.out.println("Child show"); }
+}
+
+Parent p = new Child();
+p.show();  // dynamic binding calls Child’s show()
+```
+
+---
+
+### 140. What is Polymorphism in Java
+
+* Ability of an object to take many forms.
+* Achieved via method overriding and interfaces.
+* Enables dynamic method invocation.
+* Improves code flexibility and reusability.
+* Core OOP principle.
+
+**Summary:**
+Polymorphism lets one interface represent different underlying forms, allowing flexible and extensible program designs.
+
+```java
+Animal a = new Dog();
+a.eat();  // calls Dog's eat()
+```
+
+---
+
+### 141. Method Overriding
+
+* Subclass provides specific implementation of superclass method.
+* Runtime polymorphism enabled.
+* Method signature must be the same.
+* `@Override` annotation recommended.
+* Access level cannot be more restrictive.
+
+**Summary:**
+Method overriding allows subclasses to change or extend behavior of inherited methods, enabling polymorphism.
+
+```java
+@Override
+public void eat() {
+    System.out.println("Dog eats bones");
+}
+```
+
+---
+
+### 142. super Keyword to Invoke Superclass Methods from Subclass
+
+* Refers to parent class object.
+* Used to call superclass methods overridden in subclass.
+* Can access superclass constructors.
+* Helps reuse superclass functionality.
+* Useful in constructor chaining.
+
+**Summary:**
+The `super` keyword accesses superclass methods or constructors from subclass, aiding code reuse and proper inheritance structure.
+
+```java
+class Dog extends Animal {
+    @Override
+    void eat() {
+        super.eat();
+        System.out.println("Dog eats bones");
+    }
+}
+```
+
+---
+
+### 143. Method Overloading
+
+* Multiple methods with same name but different parameters.
+* Compile-time polymorphism.
+* Improves readability and flexibility.
+* Can vary parameter type, number, or order.
+* Return type can differ but doesn’t affect overloading.
+
+**Summary:**
+Method overloading allows defining multiple methods with same name but different parameters for better code clarity and reusability.
+
+```java
+void print(int a) { }
+void print(String s) { }
+```
+
+---
+
+### 144. Method Overriding vs Method Overloading
+
+| Feature          | Overriding               | Overloading  |
+| ---------------- | ------------------------ | ------------ |
+| Polymorphism     | Runtime                  | Compile-time |
+| Same method name | Yes                      | Yes          |
+| Parameters       | Same                     | Different    |
+| Return type      | Same (covariant allowed) | Can differ   |
+| Inheritance      | Required                 | Not required |
+
+**Summary:**
+Overriding changes inherited behavior at runtime, while overloading offers multiple method variants with same name but different parameters.
+
+---
+
+### 145. Method Hiding in Java Inheritance
+
+* Static methods can be hidden, not overridden.
+* Reference type determines which static method is called.
+* Different from instance method overriding.
+* Does not support polymorphism.
+* Can cause confusion if not understood.
+
+**Summary:**
+Static methods are hidden in subclasses, resolved by reference type at compile-time, unlike overridden instance methods.
+
+```java
+class Parent {
+    static void display() { System.out.println("Parent"); }
+}
+
+class Child extends Parent {
+    static void display() { System.out.println("Child"); }
+}
+
+Parent p = new Child();
+p.display();  // calls Parent's display()
+```
+
+---
+
+### 146. Field Hiding in Java Inheritance
+
+* Subclass can declare a field with same name as superclass.
+* Field accessed depends on reference type, not object type.
+* Hides superclass field.
+* Different from method overriding.
+* Leads to confusing code, use carefully.
+
+**Summary:**
+Field hiding means subclass defines a field with same name as superclass, but reference type controls field access, not runtime object type.
+
+```java
+class Parent {
+    int value = 10;
+}
+
+class Child extends Parent {
+    int value = 20;
+}
+
+Parent p = new Child();
+System.out.println(p.value);  // prints 10
+```
+
+---
+
+### 147. The Story of Constructors & Inheritance Together
+
+* Constructors not inherited but invoked via `super()`.
+* Default constructor added by compiler if none provided.
+* Subclass constructor calls superclass constructor implicitly.
+* Allows proper initialization chain.
+* Constructor chaining ensures superclass parts initialized first.
+
+**Summary:**
+Constructors initialize objects in inheritance; subclass constructors invoke superclass constructors ensuring complete object setup.
+
+```java
+class Parent {
+    Parent() { System.out.println("Parent constructor"); }
+}
+
+class Child extends Parent {
+    Child() { System.out.println("Child constructor"); }
+}
+```
+
+---
+
+### 148. this and super Keywords in Java
+
+* `this` refers to current class instance.
+* `super` refers to superclass instance.
+* `this()` invokes current class constructor.
+* `super()` invokes superclass constructor.
+* Used to distinguish variables or methods.
+
+**Summary:**
+`this` and `super` help manage references to current and parent class objects and constructors for clear and maintainable code.
+
+```java
+class A {
+    int x;
+    A(int x) { this.x = x; }
+}
+
+class B extends A {
+    B(int x) { super(x); }
+}
+```
+
+---
+
+### 149. Types of Inheritance in Java
+
+* Single inheritance: one class inherits from one class.
+* Multilevel inheritance: class inherits from subclass.
+* Hierarchical inheritance: multiple subclasses inherit from one superclass.
+* Multiple inheritance via interfaces only.
+* Supports code reuse and polymorphism.
+
+**Summary:**
+Java supports various inheritance types to build flexible class hierarchies, except multiple inheritance through classes which is replaced by interfaces.
+
+```java
+class A {}
+class B extends A {}
+class C extends B {}
+```
+
+---
+
+### 150. Abstract Methods and Classes
+
+* Abstract class cannot be instantiated.
+* Contains abstract methods without body.
+* Subclasses must implement abstract methods.
+* Can have non-abstract methods.
+* Used to define templates.
+
+**Summary:**
+Abstract classes provide a blueprint with unimplemented methods forcing subclasses to provide behavior, enabling abstraction in design.
+
+```java
+abstract class Animal {
+    abstract void sound();
+    void eat() { System.out.println("Eating"); }
+}
+
+class Dog extends Animal {
+    void sound() { System.out.println("Bark"); }
+}
+```
+
+---
+
+Sure! Here are the next 20 topics explained with real-time use cases, bullet points, summaries, and code at the end of each:
+
+---
+
+### 131. Deep Dive on POJO Classes
+
+* POJO: Plain Old Java Object, simple class without special restrictions.
+* Used to model data with private fields and public getters/setters.
+* No inheritance or annotations required.
+* Commonly used for data transfer objects (DTOs).
+* Enhances readability and maintainability.
+
+**Summary:**
+POJO classes are simple Java classes designed to hold data, typically with private fields and public getters/setters, making them perfect for clean data modeling.
+
+```java
+public class Person {
+    private String name;
+    private int age;
+
+    public Person() {}
+
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public int getAge() { return age; }
+    public void setAge(int age) { this.age = age; }
+}
+```
+
+---
+
+### 132. Introduction to Inheritance in Java
+
+* Enables a new class (subclass) to inherit properties/methods from a parent class.
+* Supports code reuse and method overriding.
+* Represents “is-a” relationship.
+* Helps create hierarchical class structures.
+* Promotes polymorphism.
+
+**Summary:**
+Inheritance allows one class to reuse and extend another’s functionality, enabling hierarchical designs and code reuse, fundamental to OOP.
+
+```java
+class Animal {
+    void eat() { System.out.println("Eating"); }
+}
+
+class Dog extends Animal {
+    void bark() { System.out.println("Barking"); }
+}
+```
+
+---
+
+### 133. Object Class is the Default Superclass
+
+* Every Java class implicitly inherits from `java.lang.Object`.
+* Provides fundamental methods like `toString()`, `equals()`, `hashCode()`.
+* Allows polymorphism and method overriding.
+* Classes inherit default behavior from Object.
+* Forms root of all class hierarchies.
+
+**Summary:**
+All Java classes derive from the `Object` class, inheriting core methods and enabling polymorphism by default.
+
+```java
+class Custom {
+    @Override
+    public String toString() {
+        return "Custom toString() method";
+    }
+}
+```
+
+---
+
+### 134. is-a & has-a Relationships in Java
+
+* **is-a**: inheritance (Dog is-a Animal).
+* **has-a**: composition/aggregation (Car has-a Engine).
+* Facilitates design clarity.
+* Supports reusability and modularity.
+* Helps define object relationships.
+
+**Summary:**
+Understanding “is-a” (inheritance) and “has-a” (composition) relationships guides object-oriented design and helps build flexible, maintainable code.
+
+```java
+class Engine { }
+
+class Car {
+    private Engine engine;  // has-a relationship
+}
+```
+
+---
+
+### 135. What a Subclass Inherits from its Superclass
+
+* Inherits accessible fields and methods (public/protected/package-private).
+* Does NOT inherit constructors.
+* Can override inherited methods.
+* Cannot access private members directly.
+* Inherits static members but cannot override them.
+
+**Summary:**
+A subclass inherits non-private members and can override methods, enabling extension and customization of base class behavior.
+
+```java
+class Parent {
+    public void show() { System.out.println("Parent show"); }
+}
+
+class Child extends Parent {
+    @Override
+    public void show() { System.out.println("Child show"); }
+}
+```
+
+---
+
+### 136. Introduction to Upcasting in Java
+
+* Casting subclass object to superclass type.
+* Enables polymorphism.
+* Safe and implicit.
+* Limits access to superclass methods only.
+* Used in method parameters and collections.
+
+**Summary:**
+Upcasting treats subclass objects as superclass types, allowing polymorphism and uniform handling of related objects.
+
+```java
+Dog dog = new Dog();
+Animal animal = dog;  // upcasting
+animal.eat();
+```
+
+---
+
+### 137. Introduction to Downcasting & its Demo
+
+* Casting superclass reference back to subclass type.
+* Needs explicit cast and is unsafe if incorrect.
+* Enables access to subclass-specific methods.
+* Throws `ClassCastException` if invalid.
+* Used when specific subclass behavior is needed.
+
+**Summary:**
+Downcasting converts superclass references back to subclasses to access subclass methods but must be done carefully with type checks.
+
+```java
+Animal animal = new Dog();
+Dog dog = (Dog) animal;  // downcasting
+dog.bark();
+```
+
+---
+
+### 138. instanceof Operator
+
+* Tests if an object is an instance of a specific class or interface.
+* Helps avoid invalid downcasting.
+* Returns boolean.
+* Useful in polymorphic code.
+* Supports safe type checks.
+
+**Summary:**
+The `instanceof` operator ensures safe casting by checking the actual object type before downcasting.
+
+```java
+if (animal instanceof Dog) {
+    Dog dog = (Dog) animal;
+    dog.bark();
+}
+```
+
+---
+
+### 139. Static Binding and Dynamic Binding in Java
+
+* Static binding: compile-time method binding (for static, private, final methods).
+* Dynamic binding: runtime method dispatch (for overridden methods).
+* Enables polymorphism.
+* Improves flexibility and extensibility.
+* Key to Java's runtime behavior.
+
+**Summary:**
+Static binding resolves methods at compile time; dynamic binding resolves overridden methods at runtime, supporting polymorphism.
+
+```java
+class Parent {
+    void show() { System.out.println("Parent show"); }
+}
+
+class Child extends Parent {
+    @Override
+    void show() { System.out.println("Child show"); }
+}
+
+Parent p = new Child();
+p.show();  // dynamic binding calls Child’s show()
+```
+
+---
+
+### 140. What is Polymorphism in Java
+
+* Ability of an object to take many forms.
+* Achieved via method overriding and interfaces.
+* Enables dynamic method invocation.
+* Improves code flexibility and reusability.
+* Core OOP principle.
+
+**Summary:**
+Polymorphism lets one interface represent different underlying forms, allowing flexible and extensible program designs.
+
+```java
+Animal a = new Dog();
+a.eat();  // calls Dog's eat()
+```
+
+---
+
+### 141. Method Overriding
+
+* Subclass provides specific implementation of superclass method.
+* Runtime polymorphism enabled.
+* Method signature must be the same.
+* `@Override` annotation recommended.
+* Access level cannot be more restrictive.
+
+**Summary:**
+Method overriding allows subclasses to change or extend behavior of inherited methods, enabling polymorphism.
+
+```java
+@Override
+public void eat() {
+    System.out.println("Dog eats bones");
+}
+```
+
+---
+
+### 142. super Keyword to Invoke Superclass Methods from Subclass
+
+* Refers to parent class object.
+* Used to call superclass methods overridden in subclass.
+* Can access superclass constructors.
+* Helps reuse superclass functionality.
+* Useful in constructor chaining.
+
+**Summary:**
+The `super` keyword accesses superclass methods or constructors from subclass, aiding code reuse and proper inheritance structure.
+
+```java
+class Dog extends Animal {
+    @Override
+    void eat() {
+        super.eat();
+        System.out.println("Dog eats bones");
+    }
+}
+```
+
+---
+
+### 143. Method Overloading
+
+* Multiple methods with same name but different parameters.
+* Compile-time polymorphism.
+* Improves readability and flexibility.
+* Can vary parameter type, number, or order.
+* Return type can differ but doesn’t affect overloading.
+
+**Summary:**
+Method overloading allows defining multiple methods with same name but different parameters for better code clarity and reusability.
+
+```java
+void print(int a) { }
+void print(String s) { }
+```
+
+---
+
+### 144. Method Overriding vs Method Overloading
+
+| Feature          | Overriding               | Overloading  |
+| ---------------- | ------------------------ | ------------ |
+| Polymorphism     | Runtime                  | Compile-time |
+| Same method name | Yes                      | Yes          |
+| Parameters       | Same                     | Different    |
+| Return type      | Same (covariant allowed) | Can differ   |
+| Inheritance      | Required                 | Not required |
+
+**Summary:**
+Overriding changes inherited behavior at runtime, while overloading offers multiple method variants with same name but different parameters.
+
+---
+
+### 145. Method Hiding in Java Inheritance
+
+* Static methods can be hidden, not overridden.
+* Reference type determines which static method is called.
+* Different from instance method overriding.
+* Does not support polymorphism.
+* Can cause confusion if not understood.
+
+**Summary:**
+Static methods are hidden in subclasses, resolved by reference type at compile-time, unlike overridden instance methods.
+
+```java
+class Parent {
+    static void display() { System.out.println("Parent"); }
+}
+
+class Child extends Parent {
+    static void display() { System.out.println("Child"); }
+}
+
+Parent p = new Child();
+p.display();  // calls Parent's display()
+```
+
+---
+
+### 146. Field Hiding in Java Inheritance
+
+* Subclass can declare a field with same name as superclass.
+* Field accessed depends on reference type, not object type.
+* Hides superclass field.
+* Different from method overriding.
+* Leads to confusing code, use carefully.
+
+**Summary:**
+Field hiding means subclass defines a field with same name as superclass, but reference type controls field access, not runtime object type.
+
+```java
+class Parent {
+    int value = 10;
+}
+
+class Child extends Parent {
+    int value = 20;
+}
+
+Parent p = new Child();
+System.out.println(p.value);  // prints 10
+```
+
+---
+
+### 147. The Story of Constructors & Inheritance Together
+
+* Constructors not inherited but invoked via `super()`.
+* Default constructor added by compiler if none provided.
+* Subclass constructor calls superclass constructor implicitly.
+* Allows proper initialization chain.
+* Constructor chaining ensures superclass parts initialized first.
+
+**Summary:**
+Constructors initialize objects in inheritance; subclass constructors invoke superclass constructors ensuring complete object setup.
+
+```java
+class Parent {
+    Parent() { System.out.println("Parent constructor"); }
+}
+
+class Child extends Parent {
+    Child() { System.out.println("Child constructor"); }
+}
+```
+
+---
+
+### 148. this and super Keywords in Java
+
+* `this` refers to current class instance.
+* `super` refers to superclass instance.
+* `this()` invokes current class constructor.
+* `super()` invokes superclass constructor.
+* Used to distinguish variables or methods.
+
+**Summary:**
+`this` and `super` help manage references to current and parent class objects and constructors for clear and maintainable code.
+
+```java
+class A {
+    int x;
+    A(int x) { this.x = x; }
+}
+
+class B extends A {
+    B(int x) { super(x); }
+}
+```
+
+---
+
+### 149. Types of Inheritance in Java
+
+* Single inheritance: one class inherits from one class.
+* Multilevel inheritance: class inherits from subclass.
+* Hierarchical inheritance: multiple subclasses inherit from one superclass.
+* Multiple inheritance via interfaces only.
+* Supports code reuse and polymorphism.
+
+**Summary:**
+Java supports various inheritance types to build flexible class hierarchies, except multiple inheritance through classes which is replaced by interfaces.
+
+```java
+class A {}
+class B extends A {}
+class C extends B {}
+```
+
+---
+
+### 150. Abstract Methods and Classes
+
+* Abstract class cannot be instantiated.
+* Contains abstract methods without body.
+* Subclasses must implement abstract methods.
+* Can have non-abstract methods.
+* Used to define templates.
+
+**Summary:**
+Abstract classes provide a blueprint with unimplemented methods forcing subclasses to provide behavior, enabling abstraction in design.
+
+```java
+abstract class Animal {
+    abstract void sound();
+    void eat() { System.out.println("Eating"); }
+}
+
+class Dog extends Animal {
+    void sound() { System.out.println("Bark"); }
+}
+```
+
+---
+
+Got it! Here are the next 20 topics with summaries and code at the end of each:
+
+---
+
+### 151. Interface vs Abstract Class
+
+* **Abstract class:** Can have both abstract & concrete methods, state (fields), constructors, supports code reuse.
+* **Interface:** Only abstract methods (Java 8+ allows default/static methods), no state (except constants), multiple inheritance support.
+* Used for different purposes — abstract class for “is-a” relationship with shared code; interface for contract.
+
+**Summary:**
+Abstract classes provide partial implementation and state, while interfaces define a contract for behavior without state, enabling multiple inheritance.
+
+```java
+abstract class Vehicle {
+    abstract void move();
+    void start() { System.out.println("Vehicle started"); }
+}
+
+interface Flyable {
+    void fly();
+}
+
+class Plane extends Vehicle implements Flyable {
+    void move() { System.out.println("Plane moves"); }
+    public void fly() { System.out.println("Plane flies"); }
+}
+```
+
+---
+
+### 152. Default and Static Methods in Interfaces (Java 8+)
+
+* Interfaces can have `default` methods with body to provide default implementation.
+* Can also have `static` methods callable on the interface itself.
+* Helps add new methods without breaking existing implementations.
+* Supports backward compatibility.
+
+**Summary:**
+Java 8 introduced default and static methods in interfaces, allowing method implementations directly in interfaces for flexible evolution.
+
+```java
+interface MyInterface {
+    default void defaultMethod() {
+        System.out.println("Default method");
+    }
+    static void staticMethod() {
+        System.out.println("Static method");
+    }
+}
+```
+
+---
+
+### 153. Marker Interface in Java
+
+* Interface with no methods.
+* Used to provide metadata or signal to JVM/compiler.
+* Example: `Serializable`, `Cloneable`.
+* Enables special processing or behavior at runtime.
+* Acts as a tagging mechanism.
+
+**Summary:**
+Marker interfaces are empty interfaces used to tag classes for special behavior by frameworks or JVM.
+
+```java
+class MyClass implements java.io.Serializable {
+    // Class can be serialized because of this marker interface
+}
+```
+
+---
+
+### 154. Functional Interfaces and Lambda Expressions
+
+* Functional Interface: Interface with single abstract method.
+* Can be implemented using Lambda expressions.
+* Simplifies anonymous class usage.
+* Java 8 feature, used extensively in streams and concurrency.
+* Annotated with `@FunctionalInterface`.
+
+**Summary:**
+Functional interfaces enable concise function representations with lambdas, making code cleaner and more expressive.
+
+```java
+@FunctionalInterface
+interface Calculator {
+    int calculate(int a, int b);
+}
+
+Calculator add = (a, b) -> a + b;
+System.out.println(add.calculate(5, 3));
+```
+
+---
+
+### 155. Method References in Java 8
+
+* Shorthand notation for lambda expressions.
+* Use `ClassName::methodName` syntax.
+* Improves readability.
+* Can reference static, instance, or constructor methods.
+* Commonly used with streams.
+
+**Summary:**
+Method references provide a cleaner way to express lambdas by directly referring to existing methods.
+
+```java
+List<String> list = Arrays.asList("a", "b", "c");
+list.forEach(System.out::println);
+```
+
+---
+
+### 156. Inner Classes and Types
+
+* Classes defined inside another class.
+* Types: static nested, non-static inner, local inner, anonymous inner.
+* Inner classes have access to outer class members.
+* Used to logically group classes and hide implementation details.
+* Improve encapsulation.
+
+**Summary:**
+Inner classes allow defining classes inside other classes to logically group code and access outer class members.
+
+```java
+class Outer {
+    class Inner {
+        void display() { System.out.println("Inner class"); }
+    }
+}
+```
+
+---
+
+### 157. Anonymous Inner Classes
+
+* Inner class without a name.
+* Used to override methods or implement interfaces on the fly.
+* Often used with event listeners or callbacks.
+* Makes code concise without separate class files.
+* Cannot have constructors.
+
+**Summary:**
+Anonymous inner classes enable quick implementation of interfaces or subclasses inline, reducing boilerplate code.
+
+```java
+Runnable r = new Runnable() {
+    public void run() {
+        System.out.println("Running anonymously");
+    }
+};
+new Thread(r).start();
+```
+
+---
+
+### 158. Lambda vs Anonymous Inner Classes
+
+* Lambdas are more concise, introduced in Java 8.
+* Anonymous classes can have multiple methods, lambdas cannot.
+* Lambdas only for functional interfaces.
+* Lambdas capture variables effectively final.
+* Better readability and less boilerplate.
+
+**Summary:**
+Lambdas provide a shorter, cleaner alternative to anonymous inner classes for single-method interfaces.
+
+```java
+Runnable r1 = () -> System.out.println("Lambda");
+Runnable r2 = new Runnable() {
+    public void run() { System.out.println("Anonymous class"); }
+};
+```
+
+---
+
+### 159. Enumeration (enum) in Java
+
+* Special class to define fixed set of constants.
+* Can have fields, methods, constructors.
+* Type-safe and readable.
+* Used for representing predefined values.
+* Supports switch statements.
+
+**Summary:**
+Enums provide a typesafe way to represent constant sets with associated behavior.
+
+```java
+enum Day { MON, TUE, WED }
+
+Day today = Day.MON;
+```
+
+---
+
+### 160. Generics in Java
+
+* Enable type-safe collections and methods.
+* Provide compile-time type checking.
+* Avoids casting and ClassCastException.
+* Uses type parameters (e.g., `<T>`).
+* Widely used in Collections API.
+
+**Summary:**
+Generics provide stronger type checks at compile time, reducing runtime errors and eliminating casts.
+
+```java
+List<String> list = new ArrayList<>();
+list.add("Hello");
+String s = list.get(0);
+```
+
+---
+
+### 161. Wildcards in Generics (`?`)
+
+* Represents unknown type.
+* Used in method parameters.
+* Supports covariance (`? extends T`) and contravariance (`? super T`).
+* Controls what types are accepted.
+* Improves API flexibility.
+
+**Summary:**
+Wildcards in generics allow flexible and safe usage of parameterized types with unknown or bounded types.
+
+```java
+void process(List<? extends Number> list) { }
+```
+
+---
+
+### 162. Bounded Type Parameters in Generics
+
+* Restrict type parameters to subclasses/supertypes.
+* Syntax: `<T extends Number>`.
+* Ensures type safety with specific class hierarchy.
+* Allows calling methods of the bounded type.
+* Useful for algorithms working on specific types.
+
+**Summary:**
+Bounded type parameters limit generics to specific types, enabling safe and expressive code.
+
+```java
+<T extends Number> void display(T number) {
+    System.out.println(number);
+}
+```
+
+---
+
+### 163. Generic Methods
+
+* Methods with their own type parameters.
+* Independent of class-level generics.
+* Enables generic behavior in any method.
+* Type inferred automatically.
+* Improves method reusability.
+
+**Summary:**
+Generic methods allow parameterizing types locally for flexible and reusable code.
+
+```java
+public <T> void printArray(T[] array) {
+    for (T element : array) System.out.println(element);
+}
+```
+
+---
+
+### 164. Type Erasure in Generics
+
+* Generics implemented by compiler removing type info at runtime.
+* Ensures backward compatibility.
+* Causes inability to check generic types at runtime.
+* Can lead to warnings.
+* Important to understand when dealing with reflection or casts.
+
+**Summary:**
+Type erasure removes generic type information at runtime, meaning generics exist only at compile time.
+
+---
+
+### 165. Collections Framework Overview
+
+* Provides data structures like List, Set, Map, Queue.
+* Standardized API for collection manipulation.
+* Supports algorithms like sorting, searching.
+* Classes: ArrayList, HashSet, HashMap, LinkedList, etc.
+* Improves productivity and performance.
+
+**Summary:**
+Java Collections Framework offers a set of interfaces and classes to store and manipulate groups of objects efficiently.
+
+---
+
+### 166. List Interface and ArrayList Class
+
+* `List` allows ordered collection with duplicates.
+* ArrayList is resizable array implementation.
+* Fast random access, slower insert/delete at middle.
+* Methods: add, remove, get, size.
+* Frequently used for dynamic arrays.
+
+**Summary:**
+List interface represents ordered collections, and ArrayList provides a flexible, resizable array implementation.
+
+```java
+List<String> list = new ArrayList<>();
+list.add("Java");
+System.out.println(list.get(0));
+```
+
+---
+
+### 167. LinkedList Class in Java
+
+* Implements List and Deque interfaces.
+* Doubly linked list data structure.
+* Faster insert/delete at both ends.
+* Slower random access than ArrayList.
+* Useful for queues and stacks.
+
+**Summary:**
+LinkedList provides efficient insert/delete at ends and supports list and deque operations.
+
+```java
+LinkedList<String> linkedList = new LinkedList<>();
+linkedList.add("Node");
+System.out.println(linkedList.getFirst());
+```
+
+---
+
+### 168. Set Interface and HashSet Class
+
+* `Set` stores unique elements, no duplicates.
+* HashSet uses hash table, unordered.
+* Fast add, remove, contains.
+* Null allowed.
+* Useful for uniqueness checks.
+
+**Summary:**
+Set interface models unique collections; HashSet implements it with fast, unordered access.
+
+```java
+Set<Integer> set = new HashSet<>();
+set.add(10);
+set.add(10);  // duplicate ignored
+```
+
+---
+
+### 169. TreeSet Class in Java
+
+* Implements SortedSet interface.
+* Elements stored in sorted order (natural or comparator).
+* Uses Red-Black tree internally.
+* No duplicates allowed.
+* Useful for sorted unique elements.
+
+**Summary:**
+TreeSet maintains sorted unique elements using a self-balancing tree structure.
+
+```java
+TreeSet<String> treeSet = new TreeSet<>();
+treeSet.add("b");
+treeSet.add("a");
+System.out.println(treeSet.first());  // outputs "a"
+```
+
+---
+
+### 170. Map Interface and HashMap Class
+
+* `Map` stores key-value pairs.
+* HashMap uses hashing, allows null keys/values.
+* Fast lookup, insert, delete.
+* No ordering guaranteed.
+* Useful for dictionary-like structures.
+
+**Summary:**
+Map interface models key-value mappings; HashMap provides an efficient, unordered implementation.
+
+```java
+Map<String, Integer> map = new HashMap<>();
+map.put("one", 1);
+System.out.println(map.get("one"));
+```
+
+---
+
+Would you like me to continue with the next 20?
 
 
 
