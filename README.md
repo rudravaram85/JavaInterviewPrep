@@ -1698,6 +1698,412 @@ public class JoinDemo {
 ```
 
 ---
+Great! Let's continue with the next set of topics with real-world usage, 5-point explanations, summaries, and code at the end of each.
+
+---
+
+### 80. The `format()` Method in String
+
+* `String.format()` formats strings similarly to `printf` in C/C++.
+* Allows inserting variables into strings with placeholders like `%s`, `%d`, etc.
+* Useful for formatting output, logs, or UI strings consistently.
+* Supports number formatting (currency, decimal, percentage, etc.).
+* Returns a formatted string instead of printing it.
+
+**Summary:**
+`String.format()` gives fine-grained control over string formatting. It’s widely used in logging, user-facing messages, and preparing dynamic content like invoices or reports.
+
+```java
+public class FormatDemo {
+    public static void main(String[] args) {
+        String name = "Alice";
+        int age = 30;
+        String formatted = String.format("Name: %s | Age: %d", name, age);
+        System.out.println(formatted); // Output: Name: Alice | Age: 30
+    }
+}
+```
+
+---
+
+### 81. `System.out.printf()` Method
+
+* `System.out.printf()` directly prints formatted strings to the console.
+* Similar to `String.format()` but sends output to standard output.
+* Helpful for aligned, structured, or tabular console output.
+* Avoids extra variables if you just want to display.
+* Often used in CLI tools or system messages.
+
+**Summary:**
+When quick, clean output is needed, especially for alignment or spacing in terminal apps or debug tools, `System.out.printf()` is a clean and expressive solution.
+
+```java
+public class PrintfDemo {
+    public static void main(String[] args) {
+        String product = "Laptop";
+        double price = 1249.99;
+        System.out.printf("Product: %s | Price: $%.2f%n", product, price);
+        // Output: Product: Laptop | Price: $1249.99
+    }
+}
+```
+
+---
+
+### 82. Understanding How String Objects Are Immutable
+
+* In Java, `String` objects cannot be changed once created.
+* Any modification (e.g., `concat()`, `replace()`) returns a new object.
+* Enhances security, thread safety, and caching (string pool).
+* Helps prevent accidental data corruption in shared contexts.
+* Saves memory via reusability (interning).
+
+**Summary:**
+Java’s `String` immutability is foundational for performance and security. In real apps, it ensures consistency in logging, URL building, and key-value systems like databases or caches.
+
+```java
+public class ImmutableString {
+    public static void main(String[] args) {
+        String original = "Hello";
+        String updated = original.concat(" World");
+
+        System.out.println(original); // Hello
+        System.out.println(updated);  // Hello World
+    }
+}
+```
+
+---
+
+### 83. How to Create Mutable Strings in Java
+
+* Use `StringBuilder` or `StringBuffer` to create mutable strings.
+* Ideal for scenarios with frequent modifications (e.g., loops, parsing).
+* `StringBuilder` is faster but not thread-safe; `StringBuffer` is thread-safe.
+* Improves performance by avoiding object creation overhead.
+* Common in compilers, dynamic HTML generation, log builders.
+
+**Summary:**
+Mutable strings via `StringBuilder` or `StringBuffer` are performance-friendly in write-intensive tasks. They help reduce garbage collection and boost speed in string-heavy logic.
+
+```java
+public class MutableStringDemo {
+    public static void main(String[] args) {
+        StringBuilder sb = new StringBuilder("Hello");
+        sb.append(" Java").append(" World!");
+        System.out.println(sb); // Hello Java World!
+    }
+}
+```
+
+---
+
+### 84. \[Java 15] Text Block in Java
+
+* Text blocks allow multi-line string literals using triple quotes (`"""`).
+* Makes it easier to write JSON, HTML, SQL, etc., in readable form.
+* Preserves newlines and formatting as written.
+* Introduced in Java 15 for cleaner code.
+* Reduces need for escape sequences in multi-line strings.
+
+**Summary:**
+Text blocks improve readability when dealing with large text-based data like HTML or JSON. They’re especially helpful in REST API testing, SQL queries, or configuration file generation.
+
+```java
+public class TextBlockDemo {
+    public static void main(String[] args) {
+        String html = """
+                <html>
+                    <body>
+                        <h1>Hello, World!</h1>
+                    </body>
+                </html>
+                """;
+        System.out.println(html);
+    }
+}
+```
+
+---
+
+Perfect! Let’s continue with the next set (String to primitive conversions and then move into Operators). As before, there are bullet points, a 5-line summary, and the code snippet at the end of each topic.
+
+---
+
+### 85. Converting String to primitive data type values
+
+* Methods like `Integer.parseInt()`, `Double.parseDouble()`, `Boolean.parseBoolean()`, etc., convert strings to primitives.
+* Essential for parsing user input, CSV data, or API responses.
+* Throws exceptions (e.g., `NumberFormatException`) if the format is invalid.
+* Supports different numeric bases via overloads.
+* Widely used in data processing, config parsing, and input validation.
+
+**Summary:**
+Converting strings to primitives enables reliable handling of numeric or boolean inputs. This is fundamental in real-world scenarios such as reading form data, processing files, or interpreting configurations.
+
+```java
+public class ParseDemo {
+    public static void main(String[] args) {
+        String sInt = "100";
+        String sDouble = "12.34";
+        String sBool = "true";
+
+        int i = Integer.parseInt(sInt);
+        double d = Double.parseDouble(sDouble);
+        boolean b = Boolean.parseBoolean(sBool);
+
+        System.out.println("Int: " + i + ", Double: " + d + ", Bool: " + b);
+    }
+}
+```
+
+---
+
+### 86. Convert String to double data type
+
+* `Double.parseDouble()` converts numeric strings to `double`.
+* Useful for financial calculations, sensor input parsing.
+* Throws `NumberFormatException` for invalid input.
+* Supports scientific notation strings (e.g., "1E3").
+* Critical in real-time data visualization and statistical analysis.
+
+**Summary:**
+When you're handling floating-point values from text sources—like sensor logs or financial inputs—`Double.parseDouble()` turns string input into usable numeric data for calculations or charting.
+
+```java
+public class ParseDoubleDemo {
+    public static void main(String[] args) {
+        String reading = "98.76";
+        double val = Double.parseDouble(reading);
+        double converted = val * 0.453592; // convert mg to mg
+        System.out.println("Value in grams: " + converted);
+    }
+}
+```
+
+---
+
+### 87. Introduction to Operators & Operands in Java
+
+* **Operators** are symbols that perform operations (e.g., `+`, `-`, `*`, `/`, `%`).
+* **Operands** are values or variables on which operators act.
+* Operators can be unary, binary, or ternary.
+* Operate on primitives and return results based on types.
+* Foundational to arithmetic, logic, and control-flow operations.
+
+**Summary:**
+Understanding operators and operands is vital for basic computations, logic, and control in Java. These building blocks enable everything from arithmetic to conditional logic and are intrinsic to writing effective code.
+
+```java
+public class OperatorsDemo {
+    public static void main(String[] args) {
+        int a = 10, b = 3;
+        int sum = a + b;
+        int mod = a % b;
+        boolean comp = (a > b);
+        System.out.printf("sum=%d, mod=%d, a>b=%b%n", sum, mod, comp);
+    }
+}
+```
+
+---
+
+### 88. Assignment Operator in Java
+
+* The `=` operator assigns a value or expression to a variable.
+* Evaluates the right-hand side before assignment.
+* Chains allowed (e.g., `a = b = c = 10`).
+* Works with all assignable data types (primitives or references).
+* Common in initialization, updates, and loops.
+
+**Summary:**
+The assignment operator is the cornerstone of storing data in variables. Its correct use enables state changes in variables, foundational to any algorithm or process in programming.
+
+```java
+public class AssignDemo {
+    public static void main(String[] args) {
+        int x;
+        x = 5;
+        int y = x = 7;
+        System.out.println("x = " + x + ", y = " + y); // x=7, y=7
+    }
+}
+```
+
+---
+
+### 89. Introduction to Arithmetic Operators in Java
+
+* Include `+`, `-`, `*`, `/`, `%`—used for calculations.
+* Support integer and floating-point arithmetic.
+* `%` gives remainder, supporting modulo logic.
+* Follow operator precedence—`*`, `/`, `%` evaluated before `+`, `-`.
+* Used in real-world tasks like calculations, loops, indexing, and metrics.
+
+**Summary:**
+Arithmetic operators power the core of Java programming—from simple calculations to complex mathematical logic. Mastering them is critical for data processing, analytics, and algorithm implementations.
+
+```java
+public class ArithmeticDemo {
+    public static void main(String[] args) {
+        int a = 10, b = 3;
+        System.out.println("Sum: " + (a + b));
+        System.out.println("Diff: " + (a - b));
+        System.out.println("Prod: " + (a * b));
+        System.out.println("Quotient: " + (a / b));
+        System.out.println("Remainder: " + (a % b));
+    }
+}
+```
+
+---
+
+Here’s the next set of topics including Operators and control structures with real-world code, concise explanation bullets, a 5-line summary, and code at the end:
+
+---
+
+### 90. Addition Operator in Java (`+`)
+
+* Adds two numeric values (int, float, etc.).
+* Overloaded for string concatenation as well.
+* Evaluates left-to-right, following precedence rules.
+* Parentheses can alter the evaluation order.
+* Common in calculations, building strings, and increments.
+
+**Summary:**
+The `+` operator is essential for arithmetic addition and string-building in Java. It seamlessly handles both numeric sums and string concatenation. Proper precedence and grouping ensure accurate results and prevent logic errors. It's used in nearly every Java application—from financial computations to generating user-friendly messages.
+
+```java
+public class AdditionDemo {
+    public static void main(String[] args) {
+        int a = 7, b = 8;
+        System.out.println("Sum: " + (a + b)); // Sum: 15
+        String msg = "Result is " + (a + b);
+        System.out.println(msg); // Result is 15
+    }
+}
+```
+
+---
+
+### 91. String Concatenation Operator (`+`)
+
+* Joins string expressions and values neatly.
+* Converts non-string operands to string.
+* Associativity is left-to-right—grouping matters.
+* Handy for building messages or dynamic output.
+* Suitable for simple string assembly tasks.
+
+**Summary:**
+For straightforward string assembly—like combining variables and text—the `+` operator offers an intuitive approach. However, for more performance-sensitive or complex formatting, `StringBuilder` or `String.format()` may be more appropriate to avoid overhead.
+
+```java
+public class ConcatOperatorDemo {
+    public static void main(String[] args) {
+        String user = "Bob";
+        int age = 25;
+        String profile = "Name: " + user + ", Age: " + age;
+        System.out.println(profile); // Name: Bob, Age: 25
+    }
+}
+```
+
+---
+
+### 92. Division Operator in Java (`/`)
+
+* Performs integer division if both operands are integers (truncates remainder).
+* Performs floating-point division if any operand is `float` or `double`.
+* Commonly used in calculations, averages, and ratio computations.
+* Watch out for division by zero errors at runtime.
+* Precision matters: mixing types yields different results.
+
+**Summary:**
+The division operator enables both integer and floating-point division, but its behavior differs based on operand types. Understanding the difference prevents bugs around rounding and division-by-zero issues. Widely used in analytics, financial systems, and algorithmic logic.
+
+```java
+public class DivisionDemo {
+    public static void main(String[] args) {
+        System.out.println(7 / 2);    // 3
+        System.out.println(7.0 / 2);  // 3.5
+        // System.out.println(7 / 0); // Throws ArithmeticException
+    }
+}
+```
+
+---
+
+### 93. Modulus Operator in Java (`%`)
+
+* Returns the remainder of integer division.
+* Used for parity checks (even/odd), cycles, and hashing.
+* Works with decimals too, returning the fractional remainder.
+* Handy in timestamp calculations and periodic logic.
+* Watch for division by zero runtime errors.
+
+**Summary:**
+The modulus operator is invaluable for modular arithmetic, enabling logic like cycling through arrays or checking prime numbers. Its clear usage with integers and floats allows elegant implementations for time-based logic, round-robin tasks, or cleanup validations.
+
+```java
+public class ModulusDemo {
+    public static void main(String[] args) {
+        int number = 29;
+        System.out.println("Even? " + (number % 2 == 0));  // false
+        System.out.println("Remainder of 29 / 7 = " + (29 % 7)); // 1
+    }
+}
+```
+
+---
+
+### 94. Unary Plus and Minus Operators
+
+* `+` returns the positive value of a numeric operand (rarely used explicitly).
+* `-` negates the numeric value, flipping its sign.
+* Applicable only to numeric types.
+* Useful in numeric calculations and algorithms (e.g., reversing sign).
+* Often seen in complex arithmetic logic or formula translation.
+
+**Summary:**
+Unary operators handle sign operations succinctly, with `-` flipping sign and `+` signifying positivity. Though rarely used explicitly, they are handy in mathematical code, transformations, and converting values between positive and negative contexts.
+
+```java
+public class UnaryDemo {
+    public static void main(String[] args) {
+        int value = 5;
+        System.out.println("Negative value: " + -value);  // -5
+        int diff = +(-value);
+        System.out.println("Result: " + diff);  // -5
+    }
+}
+```
+
+---
+
+### 95. Compound Arithmetic Assignment Operators
+
+* Operators like `+=`, `-=`, `*=`, `/=`, `%=`, combine operation and assignment.
+* Modify the original variable directly.
+* Promotes concise code and avoids redundancy.
+* Supports arithmetic operators with built-in assignment.
+* Useful in loops, accumulators, and incremental logic.
+
+**Summary:**
+Compound assignment operators simplify code that performs repeated mathematical operations on a variable. They reduce verbosity and help improve maintainability in iterative contexts like summing arrays or adjusting counters.
+
+```java
+public class CompoundAssignDemo {
+    public static void main(String[] args) {
+        int count = 10;
+        count += 5;  // equivalent to count = count + 5;
+        count *= 2;  // equivalent to count = count * 2;
+        System.out.println("Count: " + count);  // 30
+    }
+}
+```
+
+---
+
 
 
 
