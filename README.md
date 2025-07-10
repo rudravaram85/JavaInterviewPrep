@@ -7581,7 +7581,674 @@ public class LoggingDemo {
 
 ---
 
-Would you like these notes in a downloadable format (PDF or DOCX)?
+                                             Section 14: Exception handling using try, catch and finally
+
+Here’s a structured breakdown of each subtopic with real‑time use‑case examples, bullet‑point explanations, summaries, code, and interview Q\&As:
+
+---
+
+## 1. Taste of First Exception
+
+**Real‑time use case**: Reading a configuration value as an integer.
+
+* 🚫 User may enter non-numeric value.
+* Prevents input crashes.
+* Graceful message rather than program halt.
+* Shows early value validation.
+* Sets a default fallback when input invalid.
+
+**Summary**:
+
+1. Wrap conversion in `try`.
+2. Catch `NumberFormatException`.
+3. Provide user-friendly feedback.
+4. Use default if conversion fails.
+5. Avoid unexpected crash.
+
+**Code**:
+
+```java
+String input = "abc"; 
+int value;
+try {
+    value = Integer.parseInt(input);
+} catch (NumberFormatException e) {
+    System.out.println("Invalid number; using default 0");
+    value = 0;
+}
+System.out.println("Value = " + value);
+```
+
+**Interview Q\&A**:
+
+1. **Q**: What exception does `parseInt` throw on bad input?
+   **A**: `NumberFormatException`, an unchecked runtime exception.
+2. **Q**: Why catch it early?
+   **A**: To prevent crash and handle fallback logic gracefully.
+3. **Q**: Unchecked vs checked?
+   **A**: Unchecked (runtime) aren’t forced to be caught or declared.
+
+---
+
+## 2. try‑catch Block
+
+**Real‑time use case**: File-reading to parse lines.
+
+* I/O may fail (file not found).
+* Parsing may fail.
+* Allows separate handling of I/O vs parsing.
+* Keeps program alive if minor error.
+* Easy resource management with finally.
+
+**Summary**:
+
+1. Place risky I/O in `try`.
+2. Each failure handled in its `catch`.
+3. Continue execution after handling.
+4. Clear messages for each error.
+5. Simple structure for multiple failures.
+
+**Code**:
+
+```java
+try {
+    BufferedReader br = new BufferedReader(new FileReader("data.txt"));
+    String line = br.readLine();
+    int x = Integer.parseInt(line);
+    br.close();
+} catch (FileNotFoundException e) {
+    System.out.println("File missing");
+} catch (IOException e) {
+    System.out.println("I/O error");
+}
+```
+
+**Interview Q\&A**:
+
+1. **Q**: Can a single `try` have multiple `catch` blocks?
+   **A**: Yes, to handle different exception types.
+2. **Q**: Catching `Exception` vs specific?
+   **A**: Specific ensures targeted handling; broad may mask issues.
+3. **Q**: Can `catch` change return value?
+   **A**: Yes, you can modify variables or return values inside catch.
+
+---
+
+## 3. Multiple catch Blocks
+
+**Real‑time use case**: Network call then parse JSON.
+
+* Network fails → `IOException`.
+* JSON parse fails → `JSONException`.
+* Handle each independently.
+* Fine‑tune retry vs error.
+* Clear error logging.
+
+**Summary**:
+
+1. One try covers multi-step risky ops.
+2. Multiple catches catch specific exceptions.
+3. Maintain separate recovery paths.
+4. Clean and maintainable code.
+5. Avoid clumping different errors together.
+
+**Code**:
+
+```java
+try {
+    String resp = readFromNetwork();
+    JSONObject obj = new JSONObject(resp);
+} catch (IOException e) {
+    System.out.println("Network error");
+} catch (JSONException e) {
+    System.out.println("Bad JSON format");
+}
+```
+
+**Interview Q\&A**:
+
+1. **Q**: Order of catch blocks?
+   **A**: From most specific to most general.
+2. **Q**: What if two catches same exception?
+   **A**: Compiler error: duplicate catch block.
+3. **Q**: Can catch a superclass exception after subclass?
+   **A**: Yes; subclass first, then superclass.
+
+---
+
+## 4. finally Block
+
+**Real‑time use case**: Ensure DB connection closes.
+
+* DB always must close resource.
+* Even if exception thrown.
+* Prevent leaks and locks.
+* Central place for cleanup.
+* Keeps logic DRY.
+
+**Summary**:
+
+1. `finally` always executes (except `System.exit()`).
+2. Place resource cleanup here.
+3. Works with or without exception.
+4. Good for logging end of process.
+5. Avoid exceptions in finally itself.
+
+**Code**:
+
+```java
+Connection conn = null;
+try {
+    conn = DriverManager.getConnection(url);
+    // use conn
+} catch (SQLException e) {
+    System.out.println("DB error");
+} finally {
+    if (conn != null) try { conn.close(); } catch (SQLException ignored) {}
+}
+```
+
+**Interview Q\&A**:
+
+1. **Q**: Does `finally` run if return inside try?
+   **A**: Yes.
+2. **Q**: What if `finally` throws exception?
+   **A**: It overrides any original exception unless suppressed.
+3. **Q**: Can you skip `finally`?
+   **A**: Only via `System.exit()` or power failure.
+
+---
+
+## 5. \[JAVA 7] try‑with‑resources
+
+**Real‑time use case**: Auto-close file reader.
+
+* Auto-closes at end.
+* Clean and compact syntax.
+* Handles exceptions in close.
+* Works with any `AutoCloseable`.
+* Reduces resource leak risk.
+
+**Summary**:
+
+1. Declares resources in `try(...)`.
+2. Automatically closed afterward.
+3. Can have multiple resources.
+4. Auto handles suppressed exceptions.
+5. Cleaner syntax vs manual finally.
+
+**Code**:
+
+```java
+try (BufferedReader br = new BufferedReader(new FileReader("data.txt"))) {
+    System.out.println(br.readLine());
+} catch (IOException e) {
+    System.out.println("Error reading file");
+}
+```
+
+**Interview Q\&A**:
+
+1. **Q**: What interfaces work with try‑with‑resources?
+   **A**: Anything implementing `AutoCloseable` or `Closeable`.
+2. **Q**: How are suppressed exceptions handled?
+   **A**: The primary is thrown; others are added via `Throwable.addSuppressed()`.
+3. **Q**: Try‑with‑resources vs finally?
+   **A**: Auto closes, simpler and safer.
+
+---
+
+## 6. Rules while Handling Exceptions
+
+**Real‑time use case**: Enforcing coding best practices.
+
+* Don’t swallow exceptions.
+* Log meaningful messages.
+* Clean resources properly.
+* Prefer specific catches.
+* Use exception chaining (`e.initCause()`).
+
+**Summary**:
+
+1. Catch what you can handle.
+2. Clean up resources.
+3. Log context-rich info.
+4. Avoid empty catches.
+5. Don’t misuse exceptions for flow.
+
+**Code**:
+
+```java
+try {
+    doWork();
+} catch (SpecificException e) {
+    logger.error("Work failed due to X", e);
+    throw new MyWrappedException("Attempt failed", e);
+}
+```
+
+**Interview Q\&A**:
+
+1. **Q**: Why wrap exceptions?
+   **A**: To abstract internal errors and preserve stack trace.
+2. **Q**: Is `catch(Exception e){}` ok?
+   **A**: No—too broad; hides issues.
+3. **Q**: When to rethrow?
+   **A**: When you can’t handle it; let caller decide.
+
+---
+
+## 7. The Exception Hierarchy
+
+**Real‑time use case**: Designing custom exceptions.
+
+* Know base classes.
+* Choose correct branch: checked vs unchecked.
+* Ensures caller awareness.
+* Avoid misuse of `Error`.
+* Helps grouping in catches.
+
+**Summary**:
+
+1. Base is `Throwable`.
+2. Two branches: `Error` (critical) and `Exception`.
+3. Under `Exception`: checked and runtime.
+4. Use checked for recoverable issues.
+5. Unchecked for programmer errors.
+
+**Code**:
+
+```java
+class MyException extends Exception {}  // checked
+class MyRuntimeException extends RuntimeException {}  // unchecked
+```
+
+**Interview Q\&A**:
+
+1. **Q**: Difference `Exception` vs `RuntimeException`?
+   **A**: Runtime not required to be declared or caught.
+2. **Q**: Should you create custom Error?
+   **A**: No—Error is for JVM-level faults.
+3. **Q**: Where does `IOException` reside?
+   **A**: Under checked `Exception`.
+
+---
+
+## 8. Checked Exceptions
+
+**Real‑time use case**: JDBC SQL operations.
+
+* Caller must explicitly handle or declare.
+* Enforces compile-time handling.
+* Promotes robust code.
+* Forces error consideration.
+* Avoid overusing checked exceptions.
+
+**Summary**:
+
+1. Compiler forces catch/declare.
+2. Good for expected recoverable errors.
+3. Encourage explicit handling.
+4. Misuse leads to verbose code.
+5. Use selectively.
+
+**Code**:
+
+```java
+void load() throws IOException {
+    Files.readAllLines(Path.of("x.txt"));
+}
+```
+
+**Interview Q\&A**:
+
+1. **Q**: Can you convert checked to unchecked?
+   **A**: Yes, by wrapping in `RuntimeException`.
+2. **Q**: Is `SQLException` checked or unchecked?
+   **A**: Checked.
+3. **Q**: Why not make everything checked?
+   **A**: Leads to boilerplate and limits flexibility.
+
+---
+
+## 9. Unchecked Exceptions
+
+**Real‑time use case**: Handling array index issues.
+
+* Prevents programmer errors.
+* No compile‑time forcing.
+* Simplicity in code.
+* Caller should fix bug, not handle.
+* Examples: NPE, AIOOBE.
+
+**Summary**:
+
+1. Extend `RuntimeException`.
+2. No need to declare.
+3. Used for programming errors.
+4. Fix bug instead of catching.
+5. Cleaner APIs.
+
+**Code**:
+
+```java
+if (arr == null) throw new NullPointerException("arr is null");
+int x = arr[i];  // may throw AIOOBE
+```
+
+**Interview Q\&A**:
+
+1. **Q**: Should you catch NPE?
+   **A**: No; better fix null upstream.
+2. **Q**: When to throw `IllegalArgumentException`?
+   **A**: On invalid method input.
+3. **Q**: Are unchecked exceptions propagated?
+   **A**: Yes, until caught or kill thread.
+
+---
+
+## 10. `throws` Keyword
+
+**Real‑time use case**: File parsing API design.
+
+* Documents exceptions in signature.
+* Caller knows to handle.
+* Keeps method clean.
+* Enforces error handling further up.
+* Useful in library methods.
+
+**Summary**:
+
+1. Declares exceptions a method can throw.
+2. Only for checked exceptions.
+3. Forces call site to catch or declare.
+4. Inherited methods must not narrow exceptions.
+5. Improves code readability.
+
+**Code**:
+
+```java
+public List<String> readLines(File f) throws IOException {
+    return Files.readAllLines(f.toPath());
+}
+```
+
+**Interview Q\&A**:
+
+1. **Q**: Can you declare unchecked in `throws`?
+   **A**: Yes, but optional.
+2. **Q**: Override method can throw more?
+   **A**: Can throw fewer or narrower exceptions.
+3. **Q**: What if caller ignores?
+   **A**: Compile-time error unless covered.
+
+---
+
+## 11. `throw` Keyword
+
+**Real‑time use case**: Validate user input.
+
+* Check invalid state.
+* Immediately signal issue.
+* Stops further processing.
+* Caller must handle.
+* Useful for guard clauses.
+
+**Summary**:
+
+1. Used to explicitly fire an exception.
+2. Followed by `new` operator.
+3. Typically Runtime for precondition failure.
+4. Prevents invalid states.
+5. Helps enforce API contract.
+
+**Code**:
+
+```java
+public void setAge(int age) {
+    if (age < 0) throw new IllegalArgumentException("Age >= 0 required");
+    this.age = age;
+}
+```
+
+**Interview Q\&A**:
+
+1. **Q**: Difference `throws` vs `throw`?
+   **A**: `throws` declares, `throw` launches.
+2. **Q**: Can you throw null?
+   **A**: Throws `NullPointerException` at runtime.
+3. **Q**: Throwing checked vs unchecked?
+   **A**: Checked must be declared/caught; unchecked don't.
+
+---
+
+### ✅ Final Note:
+
+Below are detailed sections covering each topic with real-world examples, five bullet-point explanations, a five-line summary, end‑of‑summary code snippets, and three interview questions with answers.
+
+---
+
+## 1. **Differences between `throw` and `throws` keyword**
+
+**Real‑time use case**: Validating input in a library method.
+
+* `throw` actually *raises* an exception instance at runtime.
+* `throws` *declares* in a method signature what checked exceptions MAY be thrown.
+* You `throw new Exception(...)`, but `public void foo() throws Exception`.
+* Callers must catch or re-declare exceptions declared with `throws`.
+* You can declare multiple exceptions using `throws A, B, C`.
+
+**Summary**:
+`throw` actively triggers an exception during execution; `throws` merely informs callers that the method might generate specific checked exceptions. `throw` is placed inside method body; `throws` appears in the signature. Only checked exceptions need to be declared with `throws`, but both keywords form a contract: *you throw*, *I know what to handle*. They complement each other in method design.
+
+**Code**:
+
+```java
+public void parseAge(String s) throws NumberFormatException {
+    int age = Integer.parseInt(s);  // NumberFormatException is thrown
+    if(age < 0) throw new IllegalArgumentException("age >= 0");
+}
+```
+
+**Interview Q\&A**:
+
+1. **Q**: Can you use `throw` in a method with no `throws` declaration?
+   **A**: Yes—but only for unchecked exceptions. Checked ones must be declared.
+2. **Q**: Can a method that declares `throws IOException` throw `Exception`?
+   **A**: No, broader exceptions not declared unless method signature allows it.
+3. **Q**: Is `throws RuntimeException` necessary?
+   **A**: No—it's optional; unchecked exceptions don’t require declaration.
+
+---
+
+## 2. **Exception Propagation**
+
+**Real‑time use case**: Multi-layered service calls (UI → service → DAO).
+
+* Exceptions bubble up the call stack if not handled.
+* Each caller can choose to catch or pass along.
+* Enables separation: low-level throws, high-level handles.
+* Prevents duplication of error handling logic.
+* Allows centralized error handling (e.g., UI layer).
+
+**Summary**:
+Exception propagation is the automatic passing of an unhandled exception up the call stack until it's caught or reaches the JVM. It enables layered architecture: deeper layers throw, outer layers catch. It avoids cluttering lower code with unrelated error handling. Propagation can be controlled with `throws` or `catch`, giving flexibility in where to manage errors.
+
+**Code**:
+
+```java
+public void uiAction() {
+    try {
+        service.doWork();
+    } catch(ServiceException e) {
+        System.out.println("UI: Could not complete action");
+    }
+}
+public void doWork() throws ServiceException {
+    dao.loadData();    // may throw DAOException
+}
+```
+
+**Interview Q\&A**:
+
+1. **Q**: What happens if no catch in application?
+   **A**: JVM catches it and terminates the thread or prints stack trace.
+2. **Q**: How to propagate a caught exception?
+   **A**: Use `throw e;` or wrap and rethrow (`throw new X(e);`).
+3. **Q**: Can you propagate unchecked exceptions?
+   **A**: Yes, automatically or explicitly, without declaration.
+
+---
+
+## 3. **Nested try block**
+
+**Real‑time use case**: HTTP request with parsing and resource cleanup.
+
+* Encapsulates different risk areas separately.
+* Inner `try` handles I/O, outer handles post-processing.
+* Can have its own `finally` for cleanup.
+* Avoids one block catching too many exceptions.
+* Enables fine-grained recovery strategies.
+
+**Summary**:
+Nested try blocks allow isolated handling of distinct operations: e.g., network I/O vs parsing. Each block can manage its own exceptions and cleanup, reducing complexity and avoiding interference. This pattern keeps low‑level concerns separated from higher‑level error handling, enhancing clarity and control.
+
+**Code**:
+
+```java
+try {
+    connection.open();
+    try {
+        String r = connection.read();
+        data = JSON.parse(r);
+    } catch(IOException e) {
+        System.out.println("Network read error");
+    } finally {
+        connection.close();
+    }
+} catch(ParseException e) {
+    System.out.println("Invalid data format");
+}
+```
+
+**Interview Q\&A**:
+
+1. **Q**: Is nesting always recommended?
+   **A**: Only when distinct operations need own handling or cleanup.
+2. **Q**: What if inner `finally` throws?
+   **A**: It overrides any previous exception unless suppressed.
+3. **Q**: Can nested `try` skip catches?
+   **A**: Yes; you can include inner `try` without its own `catch`.
+
+---
+
+## 4. **Custom Checked Exception**
+
+**Real‑time use case**: Payment validation in banking app.
+
+* Defined by extending `Exception` (checked).
+* Forces caller to catch or declare it.
+* Suitable for recoverable business faults.
+* Can include error codes or context data.
+* Improves API clarity and documentation.
+
+**Summary**:
+Checked custom exceptions are ideal for business-logic issues the caller should handle (e.g., insufficient funds). By extending `Exception`, you enforce handling at compile time. You can enrich them with codes or metadata. This improves robustness and readability by distinguishing expected failures from programmer errors.
+
+**Code**:
+
+```java
+class PaymentException extends Exception {
+    public PaymentException(String msg){ super(msg); }
+}
+public void pay(double amount) throws PaymentException {
+    if(amount > balance) throw new PaymentException("Insufficient funds");
+}
+```
+
+**Interview Q\&A**:
+
+1. **Q**: Should every custom exception be checked?
+   **A**: No—only when callers should recover or handle it.
+2. **Q**: How to add error codes?
+   **A**: Add fields + getters; set in constructor.
+3. **Q**: How to catch multiple custom exceptions?
+   **A**: Use multiple catches or catch a common superclass.
+
+---
+
+## 5. **Custom Unchecked Exception**
+
+**Real‑time use case**: Internal API misuse detection.
+
+* Extend `RuntimeException`.
+* Thrown for wrong use by programmer—e.g., illegal state.
+* Doesn’t require `throws`; caller needn’t handle.
+* Safe to use in low-level utility code.
+* Promotes fail-fast philosophy.
+
+**Summary**:
+Custom unchecked exceptions (extending `RuntimeException`) are ideal for signaling programming errors or API misuse. They allow callers to ignore catching if they prefer. This promotes cleaner APIs and encourages early failure during development. They carry full stack trace for debugging.
+
+**Code**:
+
+```java
+class InvalidConfigException extends RuntimeException {
+    public InvalidConfigException(String m){ super(m); }
+}
+public void setConfig(Config c) {
+    if(c == null) throw new InvalidConfigException("Config required");
+}
+```
+
+**Interview Q\&A**:
+
+1. **Q**: When to use checked vs unchecked?
+   **A**: Use unchecked for programming errors, checked for recoverable conditions.
+2. **Q**: Do callers have to catch unchecked?
+   **A**: No—they can, but it’s optional.
+3. **Q**: What about API design?
+   **A**: Unchecked makes methods simpler; checked enforces explicit error handling.
+
+---
+
+## 6. **`final`, `finally` and `finalize`**
+
+**Real‑time use case**: Immutable data, cleanup, and object cleanup fallback.
+
+* `final`: ensures variable unchangeable, method non-overridable.
+* `finally`: block that runs after try/catch for cleanup.
+* `finalize()`: legacy method invoked before GC (deprecated in Java 9+).
+* `finally` is reliable cleanup; `finalize()` is unpredictable.
+* Prefer `try-with-resources` and `final` for safety.
+
+**Summary**:
+`final` secures invariants, prevents extension. `finally` guarantees code execution after exceptions for cleaning. `finalize()` was an unreliable destructor alternative—deprecated now in favor of other mechanisms (e.g., AutoCloseable). Use `final` and `finally` appropriately; avoid `finalize()` in production.
+
+**Code**:
+
+```java
+public final class User {
+    private final String name;
+    public User(String n){ name = n; }
+    @Override
+    protected void finalize() throws Throwable {
+        System.out.println("Cleaning");  // legacy GC hook
+    }
+}
+```
+
+**Interview Q\&A**:
+
+1. **Q**: Why avoid `finalize()`?
+   **A**: It’s unpredictable, often too late, and has performance impact.
+2. **Q**: When is `finally` not executed?
+   **A**: If `System.exit()` runs or thread is killed.
+3. **Q**: Can a `final` method be overridden?
+   **A**: No—`final` prevents overriding in subclasses.
+
+---
+
 
 
 
