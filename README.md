@@ -2504,5 +2504,703 @@ Use the same `DateUtils` class above. Once commented, use IntelliJ's **Tools > G
 
 ---
 
+                                                        
 
+                                                      Section 6: Deep dive on String in Java
+
+Here are detailed Java examples for each string topic you listed. For each section: a real‑time use‑case, 5 bullet‑point explanations, a 5‑line summary, followed by the code snippet, then 3 interview questions & answers.
+
+---
+
+### 1. Introduction to String Pool in Java
+
+**Use-case:** Deduplicating log messages to save memory.
+
+* Java interns literal strings in a shared pool.
+* Two identical literals reference the same `String` object.
+* Heap-allocated `new String(...)` not pooled unless `.intern()` is called.
+* Saves memory, avoids duplicate copies.
+* Faster equality checks (`==`) for pooled strings.
+
+**Summary:** Java maintains a string pool that deduplicates literal strings. Literals with identical content point to the same memory, improving performance. Strings created via `new` aren't pooled unless `.intern()` is used. This helps reduce memory footprint for repetitive strings, like log tags.
+
+```java
+String a = "INFO";
+String b = "INFO";
+String c = new String("INFO");
+System.out.println(a == b);             // true (same pool object)
+System.out.println(a == c);             // false (different object)
+String d = c.intern();
+System.out.println(a == d);             // true (c interned refers pool)
+```
+
+**Interview Q\&A:**
+
+1. *Q:* Why use string pool?
+   *A:* To save memory and speed up equality with `==` on string literals.
+2. *Q:* What does `intern()` do?
+   *A:* Adds the string to the pool or returns existing, enabling pooling.
+3. *Q:* Effects of `new String("foo")`?
+   *A:* Creates separate heap objects, bypassing the pool until interned.
+
+---
+
+### 2. The `intern()` method in String
+
+**Use-case:** Cache frequently used user roles as strings.
+
+* `intern()` returns a canonical representation from the pool.
+* Helps enforce reference-based equality.
+* Useful for memory savings in high-volume strings.
+* May cost performance when pooling very many strings.
+* Ideal when you know a small set of repeating strings.
+
+**Summary:** `.intern()` lets you leverage the string pool for runtime-generated strings. It ensures only one instance exists for a given content, improving `==` comparisons and memory efficiency. Use it when reusing many string instances—just know it can have runtime cost.
+
+```java
+Map<String,String> cache = new HashMap<>();
+String role = fetchRole();              // e.g., "ADMIN"
+role = role.intern();
+cache.put(role, value);
+```
+
+**Interview Q\&A:**
+
+1. *Q:* Difference between `intern()` and `==`?
+   *A:* `intern()` ensures pool uniqueness; `==` checks reference equality.
+2. *Q:* When should you avoid using `intern()`?
+   *A:* If many unique strings, performance/memory overhead outweighs benefits.
+3. *Q:* What’s returned if pool entry exists?
+   *A:* The existing pooled string reference.
+
+---
+
+### 3. The `concat()` method in String
+
+**Use-case:** Building a file path by concatenating directory names.
+
+* `concat()` appends to original string, returning new instance.
+* Equivalent to using `+` but clearer in intent.
+* More efficient than repeated `+` in loops (though StringBuilder often better).
+* Handles null argument with `NullPointerException`.
+* Ideal for small, controlled concatenations.
+
+**Summary:** `String.concat()` appends two strings into a new string object. It’s clear and concise, equivalent to `+`, but still immutable. For many concatenations, prefer `StringBuilder`. Watch out—passing `null` crashes.
+
+```java
+String base = "/user/data";
+String file = base.concat("/file.txt");
+System.out.println(file); // "/user/data/file.txt"
+```
+
+**Interview Q\&A:**
+
+1. *Q:* Does `concat()` modify the original string?
+   *A:* No. It returns a new `String` object.
+2. *Q:* What happens if you pass `null` to `concat()`?
+   *A:* Throws `NullPointerException`.
+3. *Q:* Which is faster: `concat()` or `+` operator?
+   *A:* Similar; both create new strings, but `+` may use `StringBuilder` under the hood.
+
+---
+
+### 4. Escape sequences & Unicode in String
+
+**Use-case:** Logging user input containing quotes.
+
+* `\n`, `\t`, `\"`, `\\` etc. for control characters.
+* Unicode escapes like `\u00A9` for ©.
+* Especially useful in source code for non-ASCII.
+* Helps control visual formatting in output.
+* Must escape `"` inside a string literal.
+
+**Summary:** Escape sequences allow embedding special characters (like newline, tabs, quotes, backslashes) into strings. Unicode escapes let you include arbitrary code points directly. This is essential when working with special characters or non-ASCII symbols in source code.
+
+```java
+String msg = "He said: \"Hello!\n\"\u2602\"";
+System.out.println(msg);
+// output:
+// He said: "Hello!
+// "☂"
+```
+
+**Interview Q\&A:**
+
+1. *Q:* How do you embed a double quote in a Java string literal?
+   *A:* Use `\"`.
+2. *Q:* How to include non-ASCII chars?
+   *A:* Use Unicode escapes like `\uXXXX`.
+3. *Q:* Can you have `\n` for line breaks in code?
+   *A:* Yes – it embeds a newline character.
+
+---
+
+### 5. Finding the length of a String
+
+**Use-case:** Validating password minimum length.
+
+* `.length()` returns the number of UTF-16 code units.
+* Does not count Unicode surrogate pairs as one code point.
+* Useful for input validation.
+* Simple, constant-time method.
+* For Unicode code points, use `codePointCount()`.
+
+**Summary:** `.length()` returns the number of UTF‑16 units, which covers most characters but counts surrogate pairs separately. It's used for simple length checks, but consider `codePointCount()` when dealing with emoji or rare Unicode characters.
+
+```java
+String pwd = "passワord";
+if (pwd.length() < 8) {
+    System.out.println("Password too short.");
+}
+```
+
+**Interview Q\&A:**
+
+1. *Q:* What does `length()` return?
+   *A:* The number of UTF‑16 code units.
+2. *Q:* How count actual graphemes or emoji?
+   *A:* Use `codePointCount(0, str.length())`.
+3. *Q:* `.length()` is O(1)?
+   *A:* Yes, it retrieves a stored field.
+
+---
+
+### 6. Comparing Strings in Java
+
+**Use-case:** Checking user login credentials.
+
+* Use `.equals()` for content comparison.
+* `==` compares object references.
+* `.equalsIgnoreCase()` for case‑insensitive match.
+* `.compareTo()` for lexicographical ordering.
+* Null-safe compare: use `Objects.equals(a,b)`.
+
+**Summary:** Use `equals()` to compare content, `==` only for reference check. For ignoring case, use `equalsIgnoreCase()`. To sort strings, use `compareTo()`. Always avoid `==` for normal comparisons to prevent logic bugs.
+
+```java
+String input = getUserInput();
+if ("admin".equalsIgnoreCase(input)) {
+    System.out.println("Welcome, Admin!");
+}
+```
+
+**Interview Q\&A:**
+
+1. *Q:* Why not use `==`?
+   *A:* It tests reference, not content equality.
+2. *Q:* What does `compareTo()` return?
+   *A:* Negative if less, zero if same, positive if greater.
+3. *Q:* Null-safe equals best practice?
+   *A:* Use `Objects.equals(a,b)` or `"literal".equals(var)`.
+
+---
+
+### 7. Fetching a character at an index
+
+**Use-case:** Validating first character of a code.
+
+* `.charAt(index)` returns a `char`.
+* Zero-based indexing; throws `IndexOutOfBoundsException` on invalid index.
+* Use to inspect specific positions.
+* Check input like postal codes, product codes, etc.
+* Works across all BMP characters; surrogate pairs need care.
+
+**Summary:** Use `charAt()` to fetch a character at a specific position. It's useful for format or prefix validation. Remember zero-based indexing and exceptions on invalid access. For full Unicode characters, more care is needed.
+
+```java
+String code = "A2025X";
+if (code.charAt(0) == 'A') {
+    System.out.println("Valid code prefix");
+}
+```
+
+**Interview Q\&A:**
+
+1. *Q:* What's returned by `charAt()` for index out of range?
+   *A:* Throws `IndexOutOfBoundsException`.
+2. *Q:* Is indexing zero-based?
+   *A:* Yes.
+3. *Q:* How to get Unicode code points?
+   *A:* Use `codePointAt()`.
+
+---
+
+### 8. Checking if a String is empty
+
+**Use-case:** Form field validation for non-empty input.
+
+* `.isEmpty()` checks for `length() == 0`.
+* Does **not** check for only whitespace.
+* More intuitive than `.length() == 0`.
+* Avoids NullPointerException by pre-checking null.
+* Combine with `.trim()` for blank-strings detection.
+
+**Summary:** `.isEmpty()` quickly tells you if a string has zero length. It's simpler and clearer than using `length()`. For blank or whitespace-only checks, combine with `.trim()` or use `.isBlank()` in Java 11+.
+
+```java
+String field = "";
+if (field == null || field.isEmpty()) {
+    System.out.println("Field must be filled");
+}
+```
+
+**Interview Q\&A:**
+
+1. *Q:* Difference `isEmpty()` vs `isBlank()`?
+   *A:* `isBlank()` also checks whitespace-only.
+2. *Q:* What if `.isEmpty()` on a null?
+   *A:* Throws `NullPointerException`.
+3. *Q:* Preferred null-safe empty check?
+   *A:* `field == null || field.isEmpty()`.
+
+---
+
+### 9. Changing the case in String
+
+**Use-case:** Normalizing user emails for lookup.
+
+* `.toLowerCase()` / `.toUpperCase()` changes case per locale.
+* Default uses default locale; overloadable with `Locale`.
+* Returns new string, original unchanged.
+* Useful for case-insensitive comparisons.
+* Watch locale-specific accents (e.g., Turkish ‘i’).
+
+**Summary:** Use `.toLowerCase()` or `.toUpperCase()` to normalize string case—especially for user input. For consistent behavior, always specify a locale. Note linguistic nuances like Turkish dotless ‘i’.
+
+```java
+String email = getEmailInput();
+String normalized = email.trim().toLowerCase(Locale.ROOT);
+```
+
+**Interview Q\&A:**
+
+1. *Q:* Why pass `Locale`?
+   *A:* Avoid locale-specific quirks; use ROOT for consistency.
+2. *Q:* Do these modify original?
+   *A:* No—they return new strings.
+3. *Q:* Behavior with accents?
+   *A:* Locale-sensitive; best practice to specify locale explicitly.
+
+---
+
+### 10. Converting values to String
+
+**Use-case:** Logging metrics.
+
+* `String.valueOf(...)` handles primitives and null safely.
+* `Integer.toString()` or `Double.toString()` for primitives.
+* `String.format()` for formatted numbers.
+* `+ ""` also works but less explicit.
+* `Objects.toString(obj, default)` for null-safe conversions.
+
+**Summary:** Use `String.valueOf(...)` for null-safe primitive conversion. `toString()` methods exist on wrappers. For formatted output, use `String.format()`. Avoid relying on `+ ""` in non-trivial cases.
+
+```java
+int count = 42;
+double price = 19.99;
+String log = "Processed " + String.valueOf(count) + " items at $"
+             + Double.toString(price);
+System.out.println(log);
+```
+
+**Interview Q\&A:**
+
+1. *Q:* `String.valueOf(null)` returns?
+   *A:* `"null"` (string literal).
+2. *Q:* `int + ""` vs `String.valueOf(int)`?
+   *A:* Both convert, but `+ ""` uses concatenation; `valueOf` is clearer.
+3. *Q:* Formatting decimals cleanly?
+   *A:* Use `String.format("%.2f", value)`.
+
+---
+
+Got it! Here’s the detailed explanation, real-world use case, code, and interview Q\&A for each of your requested Java String topics.
+
+---
+
+### 1. Searching for a value in String
+
+**Use-case:** Searching a keyword in user comments to detect spam.
+
+* Use `.contains()` to check if substring exists.
+* `.indexOf()` returns position of substring or -1.
+* Case-sensitive by default.
+* Useful for filtering or validation tasks.
+* `lastIndexOf()` finds last occurrence.
+
+**Summary:** Searching strings helps filter content or detect keywords. `.contains()` is a simple boolean check, while `.indexOf()` gives the exact position. These methods are case-sensitive, so handle case accordingly. They enable quick lookups in logs, comments, or commands.
+
+```java
+String comment = "This is a spam message";
+if(comment.toLowerCase().contains("spam")) {
+    System.out.println("Potential spam detected.");
+}
+```
+
+**Interview Q\&A:**
+
+1. *Q:* Difference between `.contains()` and `.indexOf()`?
+   *A:* `.contains()` returns boolean; `.indexOf()` returns index or -1.
+2. *Q:* Is `.contains()` case-sensitive?
+   *A:* Yes, it matches exact case unless converted.
+3. *Q:* How to find last occurrence?
+   *A:* Use `.lastIndexOf()` method.
+
+---
+
+### 2. Trimming a String
+
+**Use-case:** Removing extra spaces in user input before validation.
+
+* `.trim()` removes leading & trailing whitespace.
+* Does not remove spaces inside the string.
+* Useful for input normalization.
+* Supports Unicode whitespace characters.
+* Does not modify original string; returns new one.
+
+**Summary:** Trimming cleans up user or file input by removing unnecessary leading/trailing spaces, reducing errors in processing. It’s a common preprocessing step before storing or comparing strings, ensuring uniformity.
+
+```java
+String userInput = "   hello world   ";
+String cleaned = userInput.trim();
+System.out.println("'" + cleaned + "'");  // 'hello world'
+```
+
+**Interview Q\&A:**
+
+1. *Q:* Does `.trim()` remove all spaces inside the string?
+   *A:* No, only leading and trailing spaces.
+2. *Q:* What characters does `.trim()` remove?
+   *A:* All Unicode whitespace at start and end.
+3. *Q:* Does `.trim()` modify the original string?
+   *A:* No, it returns a new trimmed string.
+
+---
+
+### 3. Fetching Substring from a String
+
+**Use-case:** Extracting file extensions from filenames.
+
+* `.substring(start)` extracts from index to end.
+* `.substring(start, end)` extracts between indices.
+* Throws `IndexOutOfBoundsException` if invalid indices.
+* Common for parsing structured strings.
+* Indexes are zero-based and inclusive start, exclusive end.
+
+**Summary:** Substrings let you extract parts of a string for parsing, such as file extensions, usernames, or commands. It’s essential for string manipulation and data extraction with precise indexing.
+
+```java
+String filename = "report.pdf";
+String extension = filename.substring(filename.lastIndexOf('.') + 1);
+System.out.println("Extension: " + extension);
+```
+
+**Interview Q\&A:**
+
+1. *Q:* Are `start` and `end` indexes inclusive in `.substring()`?
+   *A:* `start` is inclusive, `end` is exclusive.
+2. *Q:* What exception can `.substring()` throw?
+   *A:* `IndexOutOfBoundsException` for invalid indexes.
+3. *Q:* How to get substring from a start to end of string?
+   *A:* Use `.substring(start)`.
+
+---
+
+### 4. Replacing a part of a String
+
+**Use-case:** Masking sensitive data like credit card numbers.
+
+* `.replace(char oldChar, char newChar)` replaces chars.
+* `.replace(CharSequence target, CharSequence replacement)` for substrings.
+* Returns new string; original unchanged.
+* Use `.replaceAll()` for regex replacements.
+* Useful for sanitizing or formatting text.
+
+**Summary:** String replacement is key for data masking, formatting, or cleaning text. Simple `.replace()` swaps fixed parts, while `.replaceAll()` handles patterns with regex, enabling flexible replacements.
+
+```java
+String card = "1234-5678-9876-5432";
+String masked = card.replaceAll("\\d(?=\\d{4})", "*");
+System.out.println(masked);  // ****-****-****-5432
+```
+
+**Interview Q\&A:**
+
+1. *Q:* Difference between `.replace()` and `.replaceAll()`?
+   *A:* `.replace()` for fixed strings; `.replaceAll()` uses regex.
+2. *Q:* Does `.replace()` modify the original string?
+   *A:* No, it returns a new string.
+3. *Q:* Can `.replace()` replace characters and strings?
+   *A:* Yes, with appropriate method overload.
+
+---
+
+### 5. Splitting Strings
+
+**Use-case:** Parsing CSV lines into columns.
+
+* `.split(String regex)` splits by regex.
+* Returns array of substrings.
+* Can limit the number of splits with `.split(regex, limit)`.
+* Useful in parsing and tokenizing.
+* Watch out for regex special characters in delimiters.
+
+**Summary:** Splitting strings breaks data into tokens for parsing or analysis. Useful in CSV parsing, commands, or URL parameters. Regex support offers flexibility but requires careful delimiter specification.
+
+```java
+String csv = "John,Doe,30,USA";
+String[] fields = csv.split(",");
+for (String field : fields) {
+    System.out.println(field);
+}
+```
+
+**Interview Q\&A:**
+
+1. *Q:* What does `.split()` return?
+   *A:* An array of strings.
+2. *Q:* How to split on special regex characters like `.`?
+   *A:* Escape them, e.g., `"\\."`.
+3. *Q:* What is the purpose of the limit parameter?
+   *A:* Limits the number of splits, remainder returned unsplit.
+
+---
+
+### 6. \[JAVA 8] Joining Strings
+
+**Use-case:** Joining user roles into a comma-separated list.
+
+* `String.join(delimiter, elements...)` joins strings.
+* Supports Iterable inputs like lists or sets.
+* Returns a single concatenated string with delimiter.
+* Simplifies manual joining code.
+* Does not add delimiter at the end.
+
+**Summary:** `String.join()` makes concatenation of multiple strings easy and readable, especially with collections. It’s great for CSV-like output, logs, or display strings.
+
+```java
+List<String> roles = Arrays.asList("admin", "editor", "user");
+String joined = String.join(", ", roles);
+System.out.println(joined);  // admin, editor, user
+```
+
+**Interview Q\&A:**
+
+1. *Q:* Can `String.join()` take a list?
+   *A:* Yes, it accepts Iterable.
+2. *Q:* Is there a delimiter added at the end?
+   *A:* No, only between elements.
+3. *Q:* How to join with no delimiter?
+   *A:* Use empty string `""` as delimiter.
+
+---
+
+### 7. The `format()` method in String
+
+**Use-case:** Formatting currency or dates in logs.
+
+* Works like `printf` with format specifiers.
+* Returns formatted string without printing.
+* Supports placeholders like `%s`, `%d`, `%f`.
+* Locale-aware formatting.
+* Useful for building readable output strings.
+
+**Summary:** `String.format()` allows precise string formatting with placeholders, perfect for logs, reports, or UI messages. It returns a new formatted string, keeping the original unchanged.
+
+```java
+double price = 123.456;
+String formatted = String.format("Price: $%.2f", price);
+System.out.println(formatted);
+```
+
+**Interview Q\&A:**
+
+1. *Q:* What does `%s` represent?
+   *A:* String placeholder.
+2. *Q:* Does `format()` print directly?
+   *A:* No, it returns a formatted string.
+3. *Q:* How to format floating point to 2 decimals?
+   *A:* Use `%.2f`.
+
+---
+
+### 8. System.out.printf() method
+
+**Use-case:** Printing formatted output to console.
+
+* Prints formatted string directly.
+* Uses same format specifiers as `String.format()`.
+* Useful for quick formatted console output.
+* No string is returned.
+* Supports newline with `%n`.
+
+**Summary:** `printf()` is a handy method to print formatted strings to console, great for CLI tools or debugging. Unlike `format()`, it doesn’t return a string but prints immediately.
+
+```java
+int count = 5;
+System.out.printf("Processed %d items.%n", count);
+```
+
+**Interview Q\&A:**
+
+1. *Q:* Difference between `printf()` and `format()`?
+   *A:* `printf()` prints directly; `format()` returns string.
+2. *Q:* How to print newline in `printf()`?
+   *A:* Use `%n`.
+3. *Q:* Can you chain `printf()` calls?
+   *A:* Yes, it returns `PrintStream` for chaining.
+
+---
+
+### 9. Understanding how String objects are immutable
+
+**Use-case:** Ensuring thread safety of shared strings.
+
+* Once created, String objects cannot be changed.
+* All modifying operations create new strings.
+* Enables safe sharing across threads without sync.
+* Immutability helps caching and string pooling.
+* Prevents accidental or malicious modification.
+
+**Summary:** Strings are immutable, meaning any change results in a new object. This makes them thread-safe and efficient for reuse but means care must be taken with large concatenations for performance reasons.
+
+```java
+String s = "hello";
+String t = s.concat(" world");
+System.out.println(s);  // hello
+System.out.println(t);  // hello world
+```
+
+**Interview Q\&A:**
+
+1. *Q:* Why are Strings immutable in Java?
+   *A:* For thread safety and performance benefits.
+2. *Q:* Can you modify a String after creation?
+   *A:* No, all changes produce new Strings.
+3. *Q:* How does immutability affect memory usage?
+   *A:* Enables pooling and sharing, reducing duplicates.
+
+---
+
+### 10. How to create mutable strings in Java
+
+**Use-case:** Building dynamic SQL queries efficiently.
+
+* Use `StringBuilder` or `StringBuffer`.
+* `StringBuilder` is faster but not thread-safe.
+* `StringBuffer` is synchronized (thread-safe).
+* Both support append, insert, delete operations.
+* Converts to String via `.toString()`.
+
+**Summary:** Mutable strings are created with `StringBuilder` or `StringBuffer`, enabling efficient, in-place modifications without creating multiple objects. Choose based on thread safety needs.
+
+```java
+StringBuilder sb = new StringBuilder("SELECT * FROM users");
+sb.append(" WHERE age > 30");
+System.out.println(sb.toString());
+```
+
+**Interview Q\&A:**
+
+1. *Q:* Difference between `StringBuilder` and `StringBuffer`?
+   *A:* `StringBuffer` is synchronized, `StringBuilder` is not.
+2. *Q:* How to convert `StringBuilder` to `String`?
+   *A:* Use `.toString()`.
+3. *Q:* Why use mutable strings?
+   *A:* For performance when concatenating many strings.
+
+---
+
+### 11. \[JAVA 15] Text Block in Java
+
+**Use-case:** Writing multiline JSON strings in code.
+
+* Allows multiline string literals with `"""`.
+* Preserves formatting and indentation.
+* Improves readability over concatenations.
+* Supports escape sequences and interpolation.
+* Available from Java 15 onwards.
+
+**Summary:** Text Blocks simplify multiline string literals, useful for embedding JSON, XML, or formatted text in code. They reduce clutter and improve maintainability by preserving visual structure.
+
+```java
+String json = """
+{
+    "name": "Alice",
+    "age": 25
+}
+""";
+System.out.println(json);
+```
+
+**Interview Q\&A:**
+
+1. *Q:* How to denote a text block?
+   *A:* Use triple quotes `"""`.
+2. *Q:* Does text block preserve indentation?
+   *A:* Yes, preserves line breaks and spacing.
+3. *Q:* When was text block introduced?
+   *A:* Officially in Java 15.
+
+---
+
+### 12. Converting String to primitive data type values
+
+**Use-case:** Reading numeric input from user in console app.
+
+* Use wrappers: `Integer.parseInt()`, `Double.parseDouble()`, etc.
+* Throws `NumberFormatException` on invalid input.
+* Convert strings representing numbers to actual numeric types.
+* Use `Boolean.parseBoolean()` for booleans.
+* Helps parse config files, input forms, etc.
+
+**Summary:** Converting strings to primitives is common when processing input or configs. Java provides parse methods in wrapper classes that throw exceptions if conversion fails, so input validation is needed.
+
+```java
+String input = "123";
+int val = Integer.parseInt(input);
+System.out.println(val + 10);  // 133
+```
+
+**Interview Q\&A:**
+
+1. *Q:* What happens on invalid string conversion?
+   *A:* Throws `NumberFormatException`.
+2. *Q:* How to convert string to boolean?
+   *A:* Use `Boolean.parseBoolean()`.
+3. *Q:* Are parse methods static or instance?
+   *A:* Static.
+
+---
+
+### 13. Convert String to double data type
+
+**Use-case:** Parsing price inputs from forms.
+
+* Use `Double.parseDouble()` method.
+* Throws exception if string is not a valid double.
+* Handles decimal points and scientific notation.
+* Trim spaces before parsing to avoid errors.
+* Use try-catch for safe parsing.
+
+**Summary:** `Double.parseDouble()` converts string representations of decimal numbers into `double` primitives. It is commonly used to parse user inputs or data files. Exception handling is necessary to prevent crashes on invalid input.
+
+```java
+String price = "19.99";
+double val = Double.parseDouble(price.trim());
+System.out.println(val * 2);  // 39.98
+```
+
+**Interview Q\&A:**
+
+1. *Q:* What if string is null in `parseDouble()`?
+   *A:* Throws `NullPointerException`.
+2. *Q:* Does it parse localized decimal separators?
+   *A:* No, expects dot `.` decimal separator.
+3. *Q:* How to handle parsing errors?
+   *A:* Use try-catch around parse method.
+
+---
+
+                                                             Section 7: Operators in Java
 
