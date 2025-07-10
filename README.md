@@ -14250,6 +14250,211 @@ people.forEach(p -> System.out.println(p.getName()));
 
 ---
 
+Sure! Let's dive into **Java Method References**, an important and elegant feature introduced in **Java 8** as part of the **functional programming enhancements** (along with lambdas and streams).
+
+---
+
+## 🔍 What is a Method Reference?
+
+A **method reference** is a **shorthand syntax for a lambda expression** that simply calls a method. It allows you to refer to a method **without executing it**, and without explicitly writing a lambda.
+
+### ✅ General Syntax:
+
+```java
+ClassName::methodName
+```
+
+This is equivalent to a lambda that would do:
+
+```java
+x -> ClassName.methodName(x)
+```
+
+---
+
+## 📚 Why Use Method References?
+
+* Improves **readability** and **conciseness**.
+* Avoids unnecessary boilerplate.
+* Works well with **Streams**, **Lambdas**, and **Functional Interfaces** like `Function`, `Predicate`, `Consumer`, etc.
+
+---
+
+## 🧩 Types of Method References
+
+There are **four main types** of method references in Java:
+
+---
+
+### 1. **Reference to a Static Method**
+
+```java
+ClassName::staticMethod
+```
+
+#### ✅ Example:
+
+```java
+import java.util.Arrays;
+
+public class StaticMethodRefExample {
+    public static int compareByLength(String s1, String s2) {
+        return s1.length() - s2.length();
+    }
+
+    public static void main(String[] args) {
+        String[] names = {"Alice", "Bob", "Catherine"};
+        
+        // Lambda version:
+        Arrays.sort(names, (a, b) -> StaticMethodRefExample.compareByLength(a, b));
+
+        // Method reference version:
+        Arrays.sort(names, StaticMethodRefExample::compareByLength);
+        
+        System.out.println(Arrays.toString(names)); // [Bob, Alice, Catherine]
+    }
+}
+```
+
+---
+
+### 2. **Reference to an Instance Method of a Particular Object**
+
+```java
+object::instanceMethod
+```
+
+#### ✅ Example:
+
+```java
+import java.util.function.Consumer;
+
+public class InstanceMethodRefExample {
+    public void printMessage(String message) {
+        System.out.println("Message: " + message);
+    }
+
+    public static void main(String[] args) {
+        InstanceMethodRefExample printer = new InstanceMethodRefExample();
+        
+        // Lambda version:
+        Consumer<String> lambdaPrinter = s -> printer.printMessage(s);
+
+        // Method reference version:
+        Consumer<String> refPrinter = printer::printMessage;
+
+        refPrinter.accept("Hello World"); // Output: Message: Hello World
+    }
+}
+```
+
+---
+
+### 3. **Reference to an Instance Method of an Arbitrary Object of a Particular Type**
+
+```java
+ClassName::instanceMethod
+```
+
+* The method is called on an **object passed as a parameter**, not a specific instance.
+
+#### ✅ Example:
+
+```java
+import java.util.Arrays;
+
+public class ArbitraryInstanceMethodRefExample {
+    public static void main(String[] args) {
+        String[] names = {"banana", "apple", "cherry"};
+
+        // Lambda version:
+        Arrays.sort(names, (a, b) -> a.compareToIgnoreCase(b));
+
+        // Method reference version:
+        Arrays.sort(names, String::compareToIgnoreCase);
+
+        System.out.println(Arrays.toString(names)); // [apple, banana, cherry]
+    }
+}
+```
+
+Here, each element in the array is an instance of `String`, and the `compareToIgnoreCase` method is being called **on the elements**.
+
+---
+
+### 4. **Reference to a Constructor**
+
+```java
+ClassName::new
+```
+
+* Used when you need to create new instances (often with functional interfaces like `Supplier` or `Function`).
+
+#### ✅ Example:
+
+```java
+import java.util.function.Supplier;
+
+class Book {
+    public Book() {
+        System.out.println("Book created!");
+    }
+}
+
+public class ConstructorRefExample {
+    public static void main(String[] args) {
+        // Lambda version:
+        Supplier<Book> bookSupplier1 = () -> new Book();
+
+        // Method reference version:
+        Supplier<Book> bookSupplier2 = Book::new;
+
+        bookSupplier2.get(); // Output: Book created!
+    }
+}
+```
+
+You can also pass constructor references with parameters:
+
+```java
+Function<String, Integer> stringToInt = Integer::new;
+Integer i = stringToInt.apply("123"); // returns Integer 123
+```
+
+---
+
+## 🔄 Comparison: Lambda vs Method Reference
+
+| Lambda Expression                 | Method Reference      |
+| --------------------------------- | --------------------- |
+| `x -> System.out.println(x)`      | `System.out::println` |
+| `str -> str.toUpperCase()`        | `String::toUpperCase` |
+| `() -> new ArrayList<>()`         | `ArrayList::new`      |
+| `(a, b) -> Integer.compare(a, b)` | `Integer::compare`    |
+
+---
+
+## ⚠️ When Not to Use Method References
+
+* When additional logic is needed in the lambda (e.g., conditionals or transformation).
+* When it reduces readability (e.g., non-intuitive references).
+
+---
+
+## ✅ Summary
+
+| Type                               | Syntax                   | Use Case                   |
+| ---------------------------------- | ------------------------ | -------------------------- |
+| Static Method                      | `Class::staticMethod`    | No instance required       |
+| Instance Method (specific object)  | `object::instanceMethod` | Known object               |
+| Instance Method (arbitrary object) | `Class::instanceMethod`  | Applied on stream elements |
+| Constructor                        | `Class::new`             | Object creation            |
+
+---
+
+Would you like a mini project example using method references in a real-world class like a service layer or DTO transformer?
+
+
                                           Section 26: [JAVA 8] Streams API
 
 Sure! Let’s go through each topic in **Section 26: \[JAVA 8] Streams API** with real-time use case examples, explanations, summary, code, and interview questions with answers.
